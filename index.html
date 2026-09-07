@@ -878,12 +878,7 @@ body,.events-overlay,.bpanel-overlay{
 <!-- НОМЕРНЫЕ ЗНАКИ: инвентарь сохранённых номеров, открывается из профиля -->
 <div class="events-overlay" id="plates-inventory-overlay">
   <div class="bg-pattern-inner"><div class="bg-pattern-dots"></div><div class="bg-pattern-strokes"></div><div class="bg-pattern-strokes2"></div><div class="bg-pattern-mid"></div><div class="bg-pattern-wave"></div></div>
-  <div class="events-body" style="padding:14px 14px 40px;position:relative;z-index:1">
-    <div style="display:flex;justify-content:flex-end;align-items:center;margin-bottom:10px">
-      <button class="settings-btn" onclick="closePlatesInventoryMenu()" title="Закрыть" data-i18n-title="close_title">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><line x1="6" y1="6" x2="18" y2="18"/><line x1="6" y1="18" x2="18" y2="6"/></svg>
-      </button>
-    </div>
+  <div class="events-body" style="padding:20px 14px 40px;position:relative;z-index:1">
     <div class="inv-list" id="inv-list-profile"></div>
   </div>
 </div>
@@ -2031,10 +2026,12 @@ function openPlateDetail(i){
     });
   }
   document.getElementById('plate-detail-overlay')?.classList.add('show');
+  updateTelegramBackButton();
 }
 function closePlateDetail(){
   playClick();haptic('light');
   document.getElementById('plate-detail-overlay')?.classList.remove('show');
+  updateTelegramBackButton();
 }
 function closePlateDetailIfBg(e){
   if(e.target===document.getElementById('plate-detail-overlay')) closePlateDetail();
@@ -2072,9 +2069,11 @@ function openThemeLangMenu(){
   playClick();haptic('light');
   updateThemeLangUI();
   document.getElementById('theme-lang-overlay').classList.add('show');
+  updateTelegramBackButton();
 }
 function closeThemeLangMenu(){
   document.getElementById('theme-lang-overlay').classList.remove('show');
+  updateTelegramBackButton();
 }
 function closeThemeLangIfBg(e){
   if(e.target===document.getElementById('theme-lang-overlay')) closeThemeLangMenu();
@@ -2086,10 +2085,12 @@ function openMarketFilterMenu(){
   playClick();haptic('light');
   updateMarketFilterUI();
   document.getElementById('market-filter-overlay')?.classList.add('show');
+  updateTelegramBackButton();
 }
 function closeMarketFilterMenu(){
   playClick();haptic('light');
   document.getElementById('market-filter-overlay')?.classList.remove('show');
+  updateTelegramBackButton();
 }
 function closeMarketFilterIfBg(e){
   if(e.target===document.getElementById('market-filter-overlay')) closeMarketFilterMenu();
@@ -2163,10 +2164,12 @@ function openMarketCountryMenu(){
   playClick();haptic('light');
   renderMarketCountryList();
   document.getElementById('market-country-overlay')?.classList.add('show');
+  updateTelegramBackButton();
 }
 function closeMarketCountryMenu(){
   playClick();haptic('light');
   document.getElementById('market-country-overlay')?.classList.remove('show');
+  updateTelegramBackButton();
 }
 function closeMarketCountryIfBg(e){
   if(e.target===document.getElementById('market-country-overlay')) closeMarketCountryMenu();
@@ -2227,10 +2230,12 @@ function openMarketRegionMenu(){
   playClick();haptic('light');
   renderMarketRegionList();
   document.getElementById('market-region-overlay')?.classList.add('show');
+  updateTelegramBackButton();
 }
 function closeMarketRegionMenu(){
   playClick();haptic('light');
   document.getElementById('market-region-overlay')?.classList.remove('show');
+  updateTelegramBackButton();
 }
 function closeMarketRegionIfBg(e){
   if(e.target===document.getElementById('market-region-overlay')) closeMarketRegionMenu();
@@ -2269,10 +2274,12 @@ function openSearchOverlay(){
   buildSearchCountryPlates();
   clearSearchResults();
   document.getElementById('search-overlay')?.classList.add('show');
+  updateTelegramBackButton();
 }
 function closeSearchOverlay(){
   playClick();haptic('light');
   document.getElementById('search-overlay')?.classList.remove('show');
+  updateTelegramBackButton();
 }
 
 // ── НОМЕРНЫЕ ЗНАКИ: инвентарь сохранённых номеров, открывается из профиля ──
@@ -2281,10 +2288,12 @@ function openPlatesInventoryMenu(){
   playClick();haptic('light');
   renderInventory(); // на случай если список успел устареть с момента последнего сохранения/удаления
   document.getElementById('plates-inventory-overlay')?.classList.add('show');
+  updateTelegramBackButton();
 }
 function closePlatesInventoryMenu(){
   playClick();haptic('light');
   document.getElementById('plates-inventory-overlay')?.classList.remove('show');
+  updateTelegramBackButton();
 }
 
 // Переключение тем удалено — в приложении единая тёмно-синяя тема, менять её нельзя
@@ -2960,6 +2969,63 @@ const BNAV_PANELS = {
 
 let _bnavCurrent = 'main';
 
+// ═══════════════════════════════════════════════════════════
+//  TELEGRAM BACK BUTTON
+// ═══════════════════════════════════════════════════════════
+// По документации Telegram Mini Apps (BackButton API): нативная кнопка в шапке
+// мини-аппа либо "Закрыть" (крестик), либо "Назад" — это ВЗАИМОИСКЛЮЧАЮЩИЕ
+// состояния, управляются через Telegram.WebApp.BackButton.show()/hide().
+// Когда BackButton показан — Telegram сам рисует стрелку "назад" вместо крестика.
+// Правило: как только открыт любой экран поверх главного (любая шторка снизу,
+// поиск, инвентарь, детали номера, вкладки "РЫНОК"/"ПРОФИЛЬ") — показываем
+// BackButton и вешаем на него закрытие именно ЭТОГО, самого верхнего экрана.
+// Как только мы возвращаемся на главный экран — прячем BackButton, и Telegram
+// сам возвращает обычный крестик "Закрыть" мини-апп.
+let _tgBackClickHandler=null;
+function _tgBack(){
+  const tg = window.Telegram && window.Telegram.WebApp;
+  return (tg && tg.BackButton) ? tg.BackButton : null;
+}
+function setTelegramBackAction(fn){
+  const bb=_tgBack();
+  if(!bb) return;
+  if(_tgBackClickHandler) bb.offClick(_tgBackClickHandler);
+  _tgBackClickHandler=fn;
+  bb.onClick(_tgBackClickHandler);
+  bb.show();
+}
+function clearTelegramBackAction(){
+  const bb=_tgBack();
+  if(!bb) return;
+  if(_tgBackClickHandler){ bb.offClick(_tgBackClickHandler); _tgBackClickHandler=null; }
+  bb.hide();
+}
+// Пересчитывает, какой экран сейчас "самый верхний", и настраивает BackButton под него
+function updateTelegramBackButton(){
+  if(!_tgBack()) return;
+  const stack = [
+    ['plate-detail-overlay',     closePlateDetail],
+    ['market-region-overlay',    closeMarketRegionMenu],
+    ['market-country-overlay',   closeMarketCountryMenu],
+    ['market-filter-overlay',    closeMarketFilterMenu],
+    ['theme-lang-overlay',       closeThemeLangMenu],
+    ['plates-inventory-overlay', closePlatesInventoryMenu],
+    ['search-overlay',           closeSearchOverlay],
+  ];
+  for(const [id, closeFn] of stack){
+    const el=document.getElementById(id);
+    if(el && el.classList.contains('show')){
+      setTelegramBackAction(closeFn);
+      return;
+    }
+  }
+  if(_bnavCurrent && _bnavCurrent!=='main'){
+    setTelegramBackAction(()=>bnavSwitch('main'));
+    return;
+  }
+  clearTelegramBackAction();
+}
+
 function bnavSwitch(tab) {
   // Повторный тап по уже активной кнопке — ничего не делаем
   if (tab === _bnavCurrent) return;
@@ -3001,6 +3067,8 @@ function bnavSwitch(tab) {
   else if (tab === 'market') activeId = 'bnav-market';
   const activeBtn = activeId ? document.getElementById(activeId) : null;
   if (activeBtn) activeBtn.classList.add('active');
+
+  updateTelegramBackButton();
 }
 
 async function _fillProfilePanel() {
@@ -3794,6 +3862,7 @@ window.addEventListener('DOMContentLoaded',()=>{
     }catch(e){}
     try{tg.setHeaderColor?.('#1a1a1a')}catch(e){}
     try{tg.setBackgroundColor?.('#e8f0fb')}catch(e){}
+    updateTelegramBackButton(); // на старте всегда главный экран — BackButton скрыт, показан нативный крестик
   }
 
   // ── ПРИВЯЗКА К АККАУНТУ ──
