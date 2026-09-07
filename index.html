@@ -14,39 +14,16 @@ window.__ENV_TRACK_HOST__ = '{{TRACK_HOST}}';
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <title>Номерные знаки</title>
-<script>
-try{
-  var _t=localStorage.getItem('cp_theme')||'light';
-  document.documentElement.setAttribute('data-theme', _t==='dark'?'dark':'light');
-}catch(e){}
-</script>
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/i18next@23.16.4/i18next.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@tonconnect/ui@2.3.1/dist/tonconnect-ui.min.js" onerror="(function(){var s=document.createElement('script');s.src='https://unpkg.com/@tonconnect/ui@2.3.1/dist/tonconnect-ui.min.js';document.head.appendChild(s);})()"></script>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Rajdhani:wght@600;700&family=Roboto+Condensed:wght@400;700&display=swap');
+/* Единая тёмно-синяя тема — переключение тем убрано полностью */
 :root{
-  --bg:#ffffff;--surf:#ffffff;--surf2:#ffffff;--border:#c8d8ef;
-  --acc:#111111;--acc2:#555555;--acc-text:#ffffff;--text:#111111;--muted:#8e8e93;
-  --danger:#c0392b;--success:#27ae60;--gold:#c8a84b;--hdr-bg:#e8f0fb;
-  --accent:#16b7ff;
-  --accent-bg-55:rgba(22,183,255,0.22);
-  --accent-bg-45:rgba(22,183,255,0.16);
-  --accent-border-30:rgba(22,183,255,0.38);
-  --accent-bg-active:rgba(22,183,255,0.88);
-  --accent-shadow-40:rgba(22,183,255,.35);
-  --accent-bg-12:rgba(22,183,255,.12);
-  --accent-bg-10:rgba(22,183,255,.10);
-  --accent-border-25:rgba(22,183,255,.25);
-  --bnav-active-text:#fff;
-  --btn-neutral-bg:rgba(0,0,0,0.055);
-  --btn-neutral-border:rgba(0,0,0,0.10);
-  --btn-neutral-text:#555555;
-}
-:root[data-theme="dark"]{
-  --bg:#0d0e12;--surf:#1a1b20;--surf2:#1f2026;--border:#2c2d34;
-  --acc:#f0f0f0;--acc2:#aaaaaa;--acc-text:#111111;--text:#f0f0f0;--muted:#8e8e98;
-  --danger:#e05050;--success:#3ecf76;--gold:#d8b84f;--hdr-bg:#1a1b20;
+  --bg:#0a0e1a;--surf:#121729;--surf2:#161d33;--border:#252e4a;
+  --acc:#eef1fb;--acc2:#9aa6c9;--acc-text:#0a0e1a;--text:#eef1fb;--muted:#8b93b5;
+  --danger:#e05050;--success:#3ecf76;--gold:#d8b84f;--hdr-bg:#121729;
   --accent:#16b7ff;
   --accent-bg-55:rgba(22,183,255,0.22);
   --accent-bg-45:rgba(22,183,255,0.15);
@@ -59,9 +36,9 @@ try{
   --bnav-active-text:#fff;
   --btn-neutral-bg:rgba(255,255,255,0.08);
   --btn-neutral-border:rgba(255,255,255,0.14);
-  --btn-neutral-text:#e8e8e8;
+  --btn-neutral-text:#dbe2f0;
 }
-:root[data-theme="dark"] body{background:#0d0e12 !important}
+body{background:#0a0e1a}
 
 
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
@@ -175,8 +152,7 @@ body,.events-overlay,.bpanel-overlay{
 .region-sub.err{color:var(--danger)}
 
 /* ═══════════ PLATE SHELL ═══════════ */
-.plate{--plate-bg:#eeece4;background:var(--plate-bg);border:3px solid #1a1a1a;border-radius:7px;box-shadow:0 0 6px rgba(0,0,0,.35),0 0 16px rgba(0,0,0,.25),0 0 34px rgba(0,0,0,.18),0 0 60px rgba(0,0,0,.10),inset 0 1px 0 rgba(255,255,255,.7);font-family:'Rajdhani',sans-serif;font-weight:700;color:#111;display:flex;align-items:stretch;overflow:visible;position:relative}
-:root[data-theme="dark"] .plate{border-color:#1a1a1a;box-shadow:0 0 6px rgba(255,255,255,.9),0 0 16px rgba(255,255,255,.6),0 0 34px rgba(255,255,255,.4),0 0 60px rgba(255,255,255,.22),inset 0 1px 0 rgba(255,255,255,.5)}
+.plate{--plate-bg:#eeece4;background:var(--plate-bg);border:3px solid #1a1a1a;border-radius:7px;box-shadow:0 0 6px rgba(255,255,255,.9),0 0 16px rgba(255,255,255,.6),0 0 34px rgba(255,255,255,.4),0 0 60px rgba(255,255,255,.22),inset 0 1px 0 rgba(255,255,255,.5);font-family:'Rajdhani',sans-serif;font-weight:700;color:#111;display:flex;align-items:stretch;overflow:visible;position:relative}
 
 /* Единый шрифт и регистр букв только для украинского номера (включая инпут региона) */
 .plate-ua,
@@ -310,14 +286,34 @@ body,.events-overlay,.bpanel-overlay{
 .inv-title{font-size:10px;color:var(--muted);letter-spacing:2px;text-transform:uppercase}
 .inv-count{font-size:11px;color:var(--acc);font-weight:700}
 .inv-list{display:flex;flex-direction:column;gap:8px}
-/* plate in inventory — full-width white plate */
-.inv-plate-item{--plate-bg:#eeece4;background:var(--plate-bg);border:3px solid #1a1a1a;border-radius:7px;box-shadow:0 0 6px rgba(0,0,0,.35),0 0 16px rgba(0,0,0,.25),0 0 34px rgba(0,0,0,.18),0 0 60px rgba(0,0,0,.10);width:100%;display:flex;align-items:stretch;overflow:visible;font-family:'Rajdhani';font-weight:700;color:#111;position:relative;cursor:pointer;transition:box-shadow .15s}
-:root[data-theme="dark"] .inv-plate-item{border-color:#1a1a1a;box-shadow:0 0 5px rgba(255,255,255,.35),0 0 12px rgba(255,255,255,.22),0 0 22px rgba(255,255,255,.13),0 0 36px rgba(255,255,255,.07)}
-.inv-plate-item:active{box-shadow:0 2px 8px rgba(0,0,0,.4)}
-.inv-plate-del{position:absolute;top:-10px;right:4px;background:rgba(220,60,60,.85);border:none;border-radius:50%;width:26px;height:26px;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#fff;z-index:5;transition:all .15s;box-shadow:0 2px 6px rgba(200,40,40,.4)}
-.inv-plate-del:active{transform:scale(.9)}
-.inv-plate-del:hover{background:rgba(220,60,60,1)}
-.inv-empty{font-size:12px;color:var(--muted);text-align:center;padding:14px 0;letter-spacing:.5px}
+/* Сетка сохранённых номеров: максимум 4 в ряд, компактные карточки */
+.inv-list-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+/* Превью номеров в профиле: 2 строки, листается вправо свайпом */
+.inv-preview-scroll{display:grid;grid-auto-flow:column;grid-template-rows:repeat(2,1fr);grid-auto-columns:140px;gap:10px;overflow-x:auto;overflow-y:hidden;-webkit-overflow-scrolling:touch;scroll-snap-type:x proximity;padding-bottom:2px}
+.inv-preview-scroll .inv-card{scroll-snap-align:start}
+.inv-preview-scroll::-webkit-scrollbar{display:none}
+.inv-card{position:relative;background:var(--surf2);border:1px solid var(--border);border-radius:12px;padding:10px 8px 10px;display:flex;flex-direction:column;align-items:center;gap:6px;min-width:0}
+.inv-card-plate-wrap{width:100%;min-width:0;display:flex;align-items:center;justify-content:center;min-height:26px;overflow:hidden}
+.inv-card-plate-zoom{zoom:.34} /* стартовое значение, дальше пересчитывается точно под ширину карточки, см. fitInvCardZooms */
+.inv-card-footer{width:100%;display:flex;flex-direction:row;align-items:flex-end;justify-content:space-between;gap:6px;border-top:1px solid var(--border);padding-top:8px}
+.inv-card-chars{font-family:'Rajdhani',sans-serif;font-weight:700;font-size:14px;color:var(--text);letter-spacing:.2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0;text-align:left}
+.inv-card-mint{font-family:'Roboto Condensed',Arial,sans-serif;font-size:12px;color:var(--muted);letter-spacing:.2px;flex-shrink:0;white-space:nowrap}
+.inv-empty{grid-column:1/-1;font-size:12px;color:var(--muted);text-align:center;padding:14px 0;letter-spacing:.5px}
+.inv-card{cursor:pointer}
+
+/* ═══════════ PLATE DETAIL SHEET ═══════════ */
+.pd-avatar-wrap{display:flex;justify-content:center;align-items:center;padding:6px 0 18px;min-height:70px}
+.pd-avatar-zoom{zoom:.62}
+.pd-title-row{display:flex;align-items:center;justify-content:space-between;gap:10px;padding-bottom:16px}
+.pd-title-chars{font-family:'Rajdhani',sans-serif;font-weight:700;font-size:20px;color:var(--text);letter-spacing:.3px}
+.pd-title-mint{font-family:'Roboto Condensed',Arial,sans-serif;font-size:14px;color:var(--muted)}
+.pd-sell-btn{width:100%;height:50px;border:none;border-radius:14px;background:var(--accent);color:#fff;display:flex;align-items:center;justify-content:center;gap:10px;font-family:inherit;font-size:15px;font-weight:700;cursor:pointer;margin-bottom:18px}
+.pd-sell-btn:active{opacity:.85}
+.pd-sell-icon{width:26px;height:26px;border-radius:50%;border:2px solid #fff;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.pd-stats{display:flex;flex-direction:column;gap:12px}
+.pd-stat-row{display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:14px}
+.pd-stat-label{color:var(--muted)}
+.pd-stat-value{color:var(--text);font-weight:600}
 
 /* ── BOTTOM NAV ── */
 .bottom-nav{
@@ -354,6 +350,20 @@ body,.events-overlay,.bpanel-overlay{
 .events-title{font-family:'Bebas Neue';font-size:22px;letter-spacing:3px;color:#111}
 .events-back-btn{background:transparent;border:none;border-radius:50%;width:36px;height:36px;display:flex;align-items:center;justify-content:center;color:var(--muted);cursor:pointer;flex-shrink:0;padding:0}
 .events-body{flex:1;overflow-y:auto;padding:16px 14px 40px}
+.search-plate-row{width:100%;max-width:none;cursor:pointer;transition:transform .12s;zoom:1}
+.search-plate-row:active{transform:scale(.97)}
+#search-top-bar-inner.empty-state{background:var(--bg);border:1.5px solid var(--border);border-radius:14px;padding:11px 14px}
+#search-top-bar-inner.plate-state{background:var(--bg);border:1.5px solid var(--border);border-radius:14px;padding:9px 12px}
+.search-inline-char{
+  width:19px;flex-shrink:0;
+  border:none;border-bottom:2px solid var(--muted);
+  background:transparent;outline:none;padding:0 0 2px;
+  text-transform:uppercase;caret-color:var(--accent);color:var(--text);
+  text-align:center;font-family:'Rajdhani',sans-serif;font-weight:700;font-size:16px;
+}
+.search-inline-char:focus{border-bottom-color:var(--accent)}
+.search-inline-reg{flex-shrink:0}
+.search-inline-sep{flex-shrink:0;width:1px;align-self:stretch;background:var(--border);margin:0 4px}
 
 /* Bottom overlay panels (inventory) */
 .bpanel-overlay{
@@ -472,10 +482,6 @@ body,.events-overlay,.bpanel-overlay{
 .settings-row-sub{font-size:11px;color:var(--muted);margin-top:1px;letter-spacing:.3px}
 .settings-divider{height:1px;background:var(--border)}
 
-#theme-btn-light.active,#theme-btn-dark.active{background:var(--accent-bg-12)}
-#theme-btn-light.active svg,#theme-btn-dark.active svg{color:var(--accent)}
-#theme-btn-light svg,#theme-btn-dark svg{color:var(--muted);transition:color .2s}
-
 .lang-flag-btn {
   width: 42px;
   height: 42px;
@@ -488,16 +494,8 @@ body,.events-overlay,.bpanel-overlay{
   cursor: pointer;
   transition: all .2s;
   padding: 0;
-  background-color: rgba(0, 0, 0, 0.05) !important;
-  border: 2px solid rgba(0, 0, 0, 0.04) !important;
-}
-:root[data-theme="dark"] .lang-flag-btn {
   background-color: var(--surf2) !important;
   border: 2px solid transparent !important;
-}
-:root[data-theme="dark"] .lang-flag-btn.active {
-  border-color: var(--accent) !important;
-  background-color: var(--accent-bg-12) !important;
 }
 .lang-flag-btn.active {
   border-color: var(--accent) !important;
@@ -507,6 +505,18 @@ body,.events-overlay,.bpanel-overlay{
 
 .settings-toggle-row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 4px}
 .settings-toggle-label{display:flex;align-items:center;gap:12px;font-size:15px;color:var(--text)}
+.market-filter-row{display:flex;align-items:center;justify-content:space-between;gap:12px;width:100%;padding:14px 6px;background:transparent;border:none;color:var(--text);font-size:15px;font-family:inherit;text-align:left;cursor:pointer}
+.market-filter-check{width:20px;height:20px;flex-shrink:0;color:var(--accent);display:flex;align-items:center;justify-content:center;opacity:0;transform:scale(.6);transition:opacity .15s,transform .15s}
+.market-filter-row.active .market-filter-check{opacity:1;transform:scale(1)}
+.market-pill-btn{height:38px;flex-shrink:0;border-radius:11px;border:1px solid var(--btn-neutral-border);background:var(--btn-neutral-bg);color:var(--text);display:flex;align-items:center;gap:6px;cursor:pointer;padding:0 14px;font-size:14px;font-weight:600;font-family:inherit}
+.market-filter-list-scroll{max-height:56vh;overflow-y:auto;display:flex;flex-direction:column;gap:4px}
+.market-country-row{display:flex;align-items:center;gap:10px;width:100%;padding:14px 6px;background:transparent;border:none;color:var(--text);font-size:15px;font-family:inherit;text-align:left;cursor:pointer}
+.market-country-row .flag{font-size:19px;line-height:1}
+.market-country-row .check{margin-left:auto;width:20px;height:20px;flex-shrink:0;color:var(--accent);display:flex;align-items:center;justify-content:center;opacity:0;transform:scale(.6);transition:opacity .15s,transform .15s}
+.market-country-row.active .check{opacity:1;transform:scale(1)}
+#market-filter-price-from::-webkit-outer-spin-button,#market-filter-price-from::-webkit-inner-spin-button,
+#market-filter-price-to::-webkit-outer-spin-button,#market-filter-price-to::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+#market-filter-price-from::placeholder,#market-filter-price-to::placeholder{color:var(--muted)}
 .settings-toggle{position:relative;width:44px;height:26px;border-radius:13px;background:var(--border);cursor:pointer;transition:background .2s;border:none;flex-shrink:0;padding:0}
 .settings-toggle .knob{position:absolute;top:2px;left:2px;width:22px;height:22px;border-radius:50%;background:#fff;transition:left .2s;box-shadow:0 1px 3px rgba(0,0,0,.3)}
 .settings-toggle.on{background:var(--accent)}
@@ -577,34 +587,14 @@ body,.events-overlay,.bpanel-overlay{
 /* Button 2: Чат zientres (Translucent theme-dependent background, sky blue text) */
 .zientres-btn-chat {
   color: #31a3fc;
-  background-color: rgba(0, 0, 0, 0.045);
-  border: 1px solid rgba(0, 0, 0, 0.03);
-}
-:root[data-theme="dark"] .zientres-btn-chat {
   background-color: rgba(255, 255, 255, 0.08);
   border: 1px solid rgba(255, 255, 255, 0.03);
 }
 
-/* Мгновенная смена темы без мигания */
+/* Мгновенная смена без мигания (используется при других мгновенных UI-переключениях) */
 .no-transitions,
 .no-transitions * {
   transition: none !important;
-}
-
-/* Контейнер переключения темы (овал) */
-.theme-switcher-container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0;
-  border-radius: 24px;
-  padding: 4px;
-  margin: 0 auto 18px;
-  width: fit-content;
-  background-color: rgba(0, 0, 0, 0.06); /* Светлая тема */
-}
-:root[data-theme="dark"] .theme-switcher-container {
-  background-color: rgba(255, 255, 255, 0.08); /* Темная тема */
 }
 </style>
 </head>
@@ -617,7 +607,7 @@ body,.events-overlay,.bpanel-overlay{
   <div style="flex:1;height:100%"></div>
   <!-- Правая часть: меню (тема) -->
   <div style="display:flex;align-items:center;gap:8px;padding:8px 14px;position:relative;z-index:1">
-    <button class="settings-btn" id="search-btn" onclick="openSearchOverlay()" title="Поиск"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></button>
+    <button class="settings-btn" id="search-btn" onclick="openSearchOverlay()" title="Поиск" data-i18n-title="search_btn_title"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></button>
     <button class="settings-btn" id="menu-btn" onclick="openThemeLangMenu()" title="Меню"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="4" y1="7" x2="20" y2="7"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="17" x2="20" y2="17"/></svg></button>
   </div>
 </div>
@@ -741,27 +731,24 @@ body,.events-overlay,.bpanel-overlay{
       <div style="flex:1;min-width:0;padding-right:36px">
         <div style="font-family:'Bebas Neue';font-size:20px;letter-spacing:1.5px;color:var(--text);overflow:hidden;text-overflow:ellipsis;white-space:nowrap" id="wallet-profile-address">—</div>
       </div>
-      <button onclick="toggleProfileStatsInfo(event)" title="Информация" style="position:absolute;top:10px;right:10px;width:34px;height:34px;border-radius:10px;border:1px solid var(--btn-neutral-border);background:var(--btn-neutral-bg);color:var(--btn-neutral-text);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:18px;font-weight:700;line-height:1;padding:0">ℹ</button>
-      <button onclick="askDisconnectTonWallet()" title="Отключить кошелёк" style="position:absolute;top:48px;right:10px;width:34px;height:34px;border-radius:10px;border:1px solid rgba(224,80,80,.4);background:rgba(224,80,80,.14);color:#e0504e;display:flex;align-items:center;justify-content:center;cursor:pointer;padding:0">
-        <svg width="21" height="21" viewBox="0 0 887 1034" fill="currentColor" aria-hidden="true"><path d="M508 504L480 484L474 483L472 480L453 471L432 493L422 515L421 544L450 559L469 577L486 604L490 616L494 647L490 675L477 702L465 717L255 927L231 944L204 953L161 953L136 944L122 935L106 921L88 895L79 869L79 833L88 803L101 783L291 594L292 587L288 579L287 558L284 550L284 521L287 514L288 493L291 489L287 489L261 510L48 723L26 752L9 787L0 825L0 873L4 884L5 898L18 932L34 958L61 988L99 1014L132 1027L140 1027L155 1032L212 1032L228 1027L236 1027L242 1023L258 1019L282 1006L305 989L527 767L544 745L560 714L561 705L564 702L565 692L569 684L569 672L573 656L573 634L569 618L569 606L557 570L535 532Z"/><path d="M157 329L158 349L162 357L176 370L193 375L210 374L217 371L252 366L262 362L275 362L286 358L300 357L305 354L322 353L355 345L365 345L374 341L416 335L204 295L182 296L173 301L163 311L158 320Z"/><path d="M256 113L252 122L252 147L256 156L264 165L432 281L442 285L440 279L416 247L403 225L386 203L364 168L360 165L356 156L349 149L339 131L319 105L302 95L282 95L269 100Z"/><path d="M377 395L359 412L346 429L325 467L320 490L316 498L316 511L312 528L316 574L320 581L325 604L333 617L333 621L346 643L364 664L401 694L433 708L445 698L459 677L463 665L465 641L462 634L439 624L422 610L408 592L395 565L392 528L399 495L416 468L433 451L429 443L429 424L437 417L438 412L429 406L423 398L391 398Z"/><path d="M494 0L475 2L467 7L457 17L452 29L453 62L456 68L457 84L461 94L461 105L465 114L470 153L473 159L474 174L478 183L478 195L482 204L482 216L486 225L486 237L492 260L497 219L501 210L510 151L514 141L519 104L522 98L527 64L531 52L531 29L527 24L527 20L513 6L506 2Z"/><path d="M744 151L733 151L720 147L681 147L670 151L659 151L652 155L645 155L639 159L631 160L607 172L587 186L542 229L550 233L554 229L553 223L560 221L568 229L583 230L585 233L582 238L588 246L593 259L606 261L609 264L611 273L643 243L669 230L682 229L689 226L717 226L722 229L733 230L739 234L744 234L765 247L785 266L798 287L806 311L806 350L797 378L785 396L593 587L601 631L601 663L598 670L596 688L598 691L617 677L839 455L851 441L868 413L877 390L877 384L880 381L881 368L885 358L885 305L876 269L868 250L864 246L863 240L846 215L820 189L803 176L772 160Z"/></svg>
-      </button>
+      <div style="position:absolute;top:10px;right:10px;bottom:10px;display:flex;flex-direction:column;justify-content:center;align-items:flex-end;gap:8px">
+        <button onclick="toggleProfileStatsInfo(event)" title="Информация" style="width:34px;height:34px;border-radius:10px;border:1px solid var(--btn-neutral-border);background:var(--btn-neutral-bg);color:var(--btn-neutral-text);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:18px;font-weight:700;line-height:1;padding:0;flex-shrink:0">ℹ</button>
+        <button onclick="askDisconnectTonWallet()" title="Отключить кошелёк" style="width:34px;height:34px;border-radius:10px;border:1px solid rgba(224,80,80,.4);background:rgba(224,80,80,.14);color:#e0504e;display:flex;align-items:center;justify-content:center;cursor:pointer;padding:0;flex-shrink:0">
+          <svg width="21" height="21" viewBox="0 0 887 1034" fill="currentColor" aria-hidden="true"><path d="M508 504L480 484L474 483L472 480L453 471L432 493L422 515L421 544L450 559L469 577L486 604L490 616L494 647L490 675L477 702L465 717L255 927L231 944L204 953L161 953L136 944L122 935L106 921L88 895L79 869L79 833L88 803L101 783L291 594L292 587L288 579L287 558L284 550L284 521L287 514L288 493L291 489L287 489L261 510L48 723L26 752L9 787L0 825L0 873L4 884L5 898L18 932L34 958L61 988L99 1014L132 1027L140 1027L155 1032L212 1032L228 1027L236 1027L242 1023L258 1019L282 1006L305 989L527 767L544 745L560 714L561 705L564 702L565 692L569 684L569 672L573 656L573 634L569 618L569 606L557 570L535 532Z"/><path d="M157 329L158 349L162 357L176 370L193 375L210 374L217 371L252 366L262 362L275 362L286 358L300 357L305 354L322 353L355 345L365 345L374 341L416 335L204 295L182 296L173 301L163 311L158 320Z"/><path d="M256 113L252 122L252 147L256 156L264 165L432 281L442 285L440 279L416 247L403 225L386 203L364 168L360 165L356 156L349 149L339 131L319 105L302 95L282 95L269 100Z"/><path d="M377 395L359 412L346 429L325 467L320 490L316 498L316 511L312 528L316 574L320 581L325 604L333 617L333 621L346 643L364 664L401 694L433 708L445 698L459 677L463 665L465 641L462 634L439 624L422 610L408 592L395 565L392 528L399 495L416 468L433 451L429 443L429 424L437 417L438 412L429 406L423 398L391 398Z"/><path d="M494 0L475 2L467 7L457 17L452 29L453 62L456 68L457 84L461 94L461 105L465 114L470 153L473 159L474 174L478 183L478 195L482 204L482 216L486 225L486 237L492 260L497 219L501 210L510 151L514 141L519 104L522 98L527 64L531 52L531 29L527 24L527 20L513 6L506 2Z"/><path d="M744 151L733 151L720 147L681 147L670 151L659 151L652 155L645 155L639 159L631 160L607 172L587 186L542 229L550 233L554 229L553 223L560 221L568 229L583 230L585 233L582 238L588 246L593 259L606 261L609 264L611 273L643 243L669 230L682 229L689 226L717 226L722 229L733 230L739 234L744 234L765 247L785 266L798 287L806 311L806 350L797 378L785 396L593 587L601 631L601 663L598 670L596 688L598 691L617 677L839 455L851 441L868 413L877 390L877 384L880 381L881 368L885 358L885 305L876 269L868 250L864 246L863 240L846 215L820 189L803 176L772 160Z"/></svg>
+        </button>
+      </div>
       <div id="profile-stats-pop" onclick="event.stopPropagation()" style="display:none;position:absolute;top:46px;right:10px;z-index:20;width:220px;background:var(--bg);border:1px solid var(--accent-border-30);border-radius:14px;box-shadow:0 12px 32px rgba(0,0,0,.18);padding:12px;flex-direction:column;gap:9px">
         <div style="display:flex;flex-direction:column;gap:3px"><span style="font-size:11px;color:var(--muted);letter-spacing:.5px" data-i18n="profile_reg_date_short">Дата регистрации:</span><b id="profile-reg-date" style="font-size:13px;color:var(--text);font-weight:700">…</b></div>
       </div>
     </div>
 
-    <!-- Уровень профиля: кружок с прогрессом, стоит под карточкой адреса кошелька -->
-    <div id="profile-level-widget" onclick="openLevelOverlay()" style="display:flex;justify-content:flex-end;align-items:center;margin:22px 4px 6px;cursor:pointer">
-      <div style="position:relative;width:104px;height:104px">
-        <svg width="104" height="104" viewBox="0 0 104 104" style="transform:rotate(-90deg)">
-          <circle cx="52" cy="52" r="44" fill="none" stroke="var(--border)" stroke-width="8"/>
-          <circle id="level-progress-ring" cx="52" cy="52" r="44" fill="none" stroke="var(--accent)" stroke-width="8" stroke-linecap="round" stroke-dasharray="276.46" stroke-dashoffset="276.46"/>
-        </svg>
-        <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center">
-          <div id="profile-level-num" style="font-family:'Bebas Neue';font-size:34px;line-height:1;color:var(--text)">1</div>
-          <div style="font-family:'Bebas Neue';font-size:12px;letter-spacing:2px;color:var(--muted);margin-top:2px">LVL</div>
-        </div>
-      </div>
+    <!-- Инвентарь номерных знаков (виден только после подключения кошелька) -->
+    <div id="wallet-inventories" style="display:none;flex-direction:column;gap:10px;margin-top:2px">
+      <button id="profile-plates-view-all" onclick="openPlatesInventoryMenu()" style="display:none;align-items:center;gap:4px;align-self:flex-end;background:transparent;border:none;padding:0;cursor:pointer;color:var(--muted);font-size:13px;font-family:inherit">
+        <span data-i18n="view_all">Смотреть все</span>
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 6 15 12 9 18"/></svg>
+      </button>
+      <div id="inv-list-profile-preview" class="inv-list"></div>
     </div>
 
   </div>
@@ -802,6 +789,23 @@ body,.events-overlay,.bpanel-overlay{
     <div class="events-title"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" style="vertical-align:middle;margin-right:6px;flex-shrink:0"><path d="M3 9l1.5-6h15L21 9"/><path d="M3 9h18v1a3 3 0 0 1-6 0 3 3 0 0 1-6 0 3 3 0 0 1-6 0v-1z"/><rect x="5" y="14" width="5" height="6" rx="1"/><path d="M14 14h5v6h-5v-6z"/><path d="M3 21h18"/></svg><span data-i18n="nav_market">РЫНОК</span></div>
   </div>
   <div class="events-body" style="padding:12px 14px 80px;position:relative;z-index:1">
+    <div style="position:absolute;top:14px;left:14px;right:14px;z-index:2;display:flex;gap:8px;flex-wrap:wrap">
+      <button id="market-filter-btn" onclick="openMarketFilterMenu()" title="Фильтр" data-i18n-title="filter_btn_title" style="width:38px;height:38px;flex-shrink:0;border-radius:11px;border:1px solid var(--btn-neutral-border);background:var(--btn-neutral-bg);color:var(--btn-neutral-text);display:flex;align-items:center;justify-content:center;cursor:pointer;padding:0">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polygon points="3 4 21 4 14 13 14 20 10 20 10 13 3 4"/></svg>
+      </button>
+      <button id="market-country-btn" onclick="openMarketCountryMenu()" class="market-pill-btn">
+        <span id="market-country-btn-label" data-i18n="filter_country_label">Страна</span>
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </button>
+      <button id="market-region-btn" onclick="openMarketRegionMenu()" class="market-pill-btn">
+        <span id="market-region-btn-label" data-i18n="filter_region_label">Регион</span>
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </button>
+    </div>
+    <button id="market-clear-filters-btn" onclick="clearMarketFilters()" style="display:none;position:absolute;top:60px;left:14px;z-index:2;align-items:center;gap:6px;background:transparent;border:none;padding:4px 2px;color:var(--muted);font-size:13px;font-family:inherit;cursor:pointer">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0"><path d="M9 14 4 9l5-5"/><path d="M4 9h10.5a5.5 5.5 0 0 1 0 11H11"/></svg>
+      <span data-i18n="filter_clear">Очистить фильтры</span>
+    </button>
   </div>
 </div>
 
@@ -855,26 +859,32 @@ body,.events-overlay,.bpanel-overlay{
   <div class="bg-pattern-inner"><div class="bg-pattern-dots"></div><div class="bg-pattern-strokes"></div><div class="bg-pattern-strokes2"></div><div class="bg-pattern-mid"></div><div class="bg-pattern-wave"></div></div>
   <div class="events-body" style="padding:14px 14px 40px;position:relative;z-index:1">
     <div style="display:flex;align-items:center;gap:10px">
-      <div style="flex:1;min-width:0;display:flex;align-items:center;gap:9px;background:var(--bg);border:1.5px solid var(--border);border-radius:14px;padding:11px 14px">
+      <div id="search-top-bar-inner" class="empty-state" style="flex:1;min-width:0;display:flex;align-items:center;gap:9px">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-        <span style="color:var(--muted);font-family:'Roboto Condensed',Arial,sans-serif;font-size:15px" data-i18n="search_placeholder">Поиск...</span>
+        <span style="color:var(--muted);font-family:'Roboto Condensed',Arial,sans-serif;font-size:15px" data-i18n="search_placeholder">Выбери страну</span>
       </div>
-      <button class="settings-btn" onclick="closeSearchOverlay()" title="Закрыть">
+      <button class="settings-btn" onclick="closeSearchOverlay()" title="Закрыть" data-i18n-title="close_title">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><line x1="6" y1="6" x2="18" y2="18"/><line x1="6" y1="18" x2="18" y2="6"/></svg>
       </button>
     </div>
+    <div id="search-country-plates" style="display:flex;flex-direction:column;align-items:flex-start;gap:12px;margin-top:16px"></div>
+    <div id="search-go-wrap" style="display:none;margin-top:14px">
+      <button id="search-go-btn" onclick="doPlateSearch()" style="width:100%;height:46px;border-radius:13px;border:none;background:var(--accent);color:#fff;font-family:inherit;font-size:15px;font-weight:700;cursor:pointer" data-i18n="search_go_btn">Искать</button>
+    </div>
+    <div id="search-results" style="margin-top:14px"></div>
   </div>
 </div>
 
-<!-- LEVEL: пустое меню, открывается по клику на круг уровня в профиле -->
-<div class="events-overlay" id="level-overlay">
+<!-- НОМЕРНЫЕ ЗНАКИ: инвентарь сохранённых номеров, открывается из профиля -->
+<div class="events-overlay" id="plates-inventory-overlay">
   <div class="bg-pattern-inner"><div class="bg-pattern-dots"></div><div class="bg-pattern-strokes"></div><div class="bg-pattern-strokes2"></div><div class="bg-pattern-mid"></div><div class="bg-pattern-wave"></div></div>
   <div class="events-body" style="padding:14px 14px 40px;position:relative;z-index:1">
-    <div style="display:flex;justify-content:flex-end">
-      <button class="settings-btn" onclick="closeLevelOverlay()" title="Закрыть">
+    <div style="display:flex;justify-content:flex-end;align-items:center;margin-bottom:10px">
+      <button class="settings-btn" onclick="closePlatesInventoryMenu()" title="Закрыть" data-i18n-title="close_title">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><line x1="6" y1="6" x2="18" y2="18"/><line x1="6" y1="18" x2="18" y2="6"/></svg>
       </button>
     </div>
+    <div class="inv-list" id="inv-list-profile"></div>
   </div>
 </div>
 
@@ -885,15 +895,7 @@ body,.events-overlay,.bpanel-overlay{
       <div class="swipe-handle-bar"></div>
     </div>
     <div class="settings-body" style="position:relative;z-index:1;padding-top:4px">
-      <!-- Переключатель темы: солнце / луна -->
-      <div class="theme-switcher-container">
-        <button id="theme-btn-light" onclick="setTheme('light')" style="border:none;background:transparent;border-radius:20px;padding:8px 22px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v2.5M12 19.5V22M4.22 4.22l1.77 1.77M18 18l1.78 1.78M2 12h2.5M19.5 12H22M4.22 19.78l1.77-1.77M18 6l1.78-1.78" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-        </button>
-        <button id="theme-btn-dark" onclick="setTheme('dark')" style="border:none;background:transparent;border-radius:20px;padding:8px 22px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
-        </button>
-      </div>
+      <!-- Переключатель темы удалён — в приложении единая тёмно-синяя тема -->
 
       <div class="settings-divider" style="margin:0 0 16px"></div>
 
@@ -946,6 +948,81 @@ body,.events-overlay,.bpanel-overlay{
         <button class="settings-toggle" id="sound-toggle-btn" onclick="toggleSound()"><span class="knob"></span></button>
       </div>
     </div>
+  </div>
+</div>
+
+<!-- MARKET FILTER: выезжает снизу по кнопке-фильтру на экране "Рынок" -->
+<div class="settings-overlay" id="market-filter-overlay" onclick="closeMarketFilterIfBg(event)">
+  <div class="settings-sheet" style="position:relative">
+    <div class="settings-hdr" style="position:relative;z-index:1">
+      <div class="swipe-handle-bar"></div>
+      <div style="font-size:15px;font-weight:700;color:var(--text);margin-top:6px" data-i18n="filter_btn_title">Фильтр</div>
+    </div>
+    <div class="settings-body" style="position:relative;z-index:1;padding-top:4px">
+      <div id="market-filter-list" style="display:flex;flex-direction:column;gap:4px">
+        <button class="market-filter-row" data-val="price_asc" onclick="selectMarketFilter('price_asc')">
+          <span data-i18n="filter_sort_cheap">Сначала дешёвые</span>
+          <span class="market-filter-check"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
+        </button>
+        <div class="settings-divider"></div>
+        <button class="market-filter-row" data-val="price_desc" onclick="selectMarketFilter('price_desc')">
+          <span data-i18n="filter_sort_expensive">Сначала дорогие</span>
+          <span class="market-filter-check"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
+        </button>
+        <div class="settings-divider"></div>
+        <button class="market-filter-row" data-val="newest" onclick="selectMarketFilter('newest')">
+          <span data-i18n="filter_sort_newest">Недавно добавленные</span>
+          <span class="market-filter-check"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
+        </button>
+        <div class="settings-divider"></div>
+        <button class="market-filter-row" data-val="oldest" onclick="selectMarketFilter('oldest')">
+          <span data-i18n="filter_sort_oldest">Давно добавленные</span>
+          <span class="market-filter-check"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
+        </button>
+        <div class="settings-divider"></div>
+        <div style="padding:14px 6px 4px">
+          <div style="font-size:15px;color:var(--text);margin-bottom:10px" data-i18n="filter_price_label">Цена</div>
+          <div style="display:flex;gap:10px">
+            <input type="number" inputmode="numeric" id="market-filter-price-from" placeholder="От" data-i18n-placeholder="filter_price_from" oninput="onMarketPriceRangeInput()" style="flex:1;min-width:0;background:var(--btn-neutral-bg);border:1px solid var(--btn-neutral-border);border-radius:14px;padding:14px 16px;color:var(--text);font-size:15px;font-family:inherit;-moz-appearance:textfield">
+            <input type="number" inputmode="numeric" id="market-filter-price-to" placeholder="До" data-i18n-placeholder="filter_price_to" oninput="onMarketPriceRangeInput()" style="flex:1;min-width:0;background:var(--btn-neutral-bg);border:1px solid var(--btn-neutral-border);border-radius:14px;padding:14px 16px;color:var(--text);font-size:15px;font-family:inherit;-moz-appearance:textfield">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MARKET COUNTRY FILTER: выбор страны, выезжает снизу -->
+<div class="settings-overlay" id="market-country-overlay" onclick="closeMarketCountryIfBg(event)">
+  <div class="settings-sheet" style="position:relative">
+    <div class="settings-hdr" style="position:relative;z-index:1">
+      <div class="swipe-handle-bar"></div>
+      <div style="font-size:15px;font-weight:700;color:var(--text);margin-top:6px" data-i18n="filter_country_label">Страна</div>
+    </div>
+    <div class="settings-body" style="position:relative;z-index:1;padding-top:4px">
+      <div id="market-country-list" style="display:flex;flex-direction:column;gap:4px"></div>
+    </div>
+  </div>
+</div>
+
+<!-- MARKET REGION FILTER: выбор региона выбранной страны, выезжает снизу -->
+<div class="settings-overlay" id="market-region-overlay" onclick="closeMarketRegionIfBg(event)">
+  <div class="settings-sheet" style="position:relative">
+    <div class="settings-hdr" style="position:relative;z-index:1">
+      <div class="swipe-handle-bar"></div>
+      <div style="font-size:15px;font-weight:700;color:var(--text);margin-top:6px" data-i18n="filter_region_label">Регион</div>
+    </div>
+    <div class="settings-body" style="position:relative;z-index:1;padding-top:4px">
+      <div id="market-region-list"></div>
+    </div>
+  </div>
+</div>
+
+<!-- PLATE DETAIL: открывается тапом по номеру в инвентаре, полноценный экран -->
+<div class="events-overlay" id="plate-detail-overlay" onclick="closePlateDetailIfBg(event)">
+  <div class="bg-pattern-inner"><div class="bg-pattern-dots"></div><div class="bg-pattern-strokes"></div><div class="bg-pattern-strokes2"></div><div class="bg-pattern-mid"></div><div class="bg-pattern-wave"></div></div>
+  <div class="events-body" style="padding:20px 18px 40px;position:relative;z-index:1">
+    <div id="plate-detail-body"></div>
   </div>
 </div>
 
@@ -1173,6 +1250,206 @@ function plateHTML(c, v, rc, emptyClass, forInventory=false){
   return inner;
 }
 
+// ── ПОИСК: превью-номера стран (без символов, вместо них подчёркивания), кликабельные ──
+function searchCountryPlateHTML(c){
+  const DASH='_';
+  const Dd=(cls)=>`<span class="dc ${cls}"><span>${DASH}</span></span>`;
+  let inner='';
+  if(c==='RU'){
+    inner=`<div class="plate plate-ru">
+      <div class="ru-body"><div class="ru-num-row">
+        ${Dd('ru-dc letter')}<span class="ru-sp">&nbsp;</span>
+        ${Dd('ru-dc')}${Dd('ru-dc')}${Dd('ru-dc')}
+        <span class="ru-sp">&nbsp;</span>${Dd('ru-dc letter')}${Dd('ru-dc letter')}
+      </div></div>
+      <div class="ru-divider"></div>
+      <div class="ru-right">
+        <span style="display:block;width:100%;height:60px;font-family:'Rajdhani',sans-serif;font-weight:700;font-size:22px;color:#111;text-align:center;line-height:60px;letter-spacing:-0.5px">${DASH}${DASH}</span>
+        <div class="ru-flag-row"><span class="ru-rus-txt">RUS</span></div>
+      </div>
+    </div>`;
+  } else if(c==='UA'){
+    inner=`<div class="plate plate-ua">
+      <div class="ua-strip"><span class="ua-code">UA</span></div>
+      <div class="ua-body">
+        <span style="font-family:Rajdhani;font-weight:700;font-size:32px;color:#111;letter-spacing:0px">${DASH}${DASH}</span>
+        <span class="ua-sp">&nbsp;</span>
+        ${Dd('ua-dc')}${Dd('ua-dc')}${Dd('ua-dc')}${Dd('ua-dc')}
+        <span class="ua-sp">&nbsp;</span>${Dd('ua-dc letter')}${Dd('ua-dc letter')}
+      </div>
+    </div>`;
+  } else if(c==='BY'){
+    inner=`<div class="plate plate-by">
+      <div class="by-left"><span class="by-code">BY</span></div>
+      <div class="by-body">
+        ${Dd('by-dc')}${Dd('by-dc')}${Dd('by-dc')}${Dd('by-dc')}
+        <span class="by-sp">&nbsp;</span>${Dd('by-dc letter')}${Dd('by-dc letter')}
+        <span class="by-dash">-</span>
+        <span style="font-family:Rajdhani;font-weight:700;font-size:32px;color:#111;min-width:22px;text-align:center">${DASH}</span>
+      </div>
+    </div>`;
+  } else if(c==='KZ'){
+    inner=`<div class="plate plate-kz">
+      <div class="kz-body">
+        <div class="kz-flagcol"><span class="kz-kz">KZ</span></div>
+        <div class="kz-chars">
+          ${Dd('kz-dc')}${Dd('kz-dc')}${Dd('kz-dc')}
+          <span class="kz-sp">&nbsp;</span>
+          ${Dd('kz-dc letter')}${Dd('kz-dc letter')}${Dd('kz-dc letter')}
+        </div>
+        <div class="kz-vdiv"></div>
+        <div class="kz-right">
+          <span style="font-family:Rajdhani;font-weight:700;font-size:24px;color:#111;text-align:center;line-height:1">${DASH}${DASH}</span>
+        </div>
+      </div>
+    </div>`;
+  }
+  return inner;
+}
+function buildSearchCountryPlates(){
+  const wrap=document.getElementById('search-country-plates');
+  if(!wrap) return;
+  const order=['RU','UA','BY','KZ'];
+  wrap.innerHTML=order.map(c=>`<div class="search-plate-row" onclick="selectSearchCountry('${c}')">${searchCountryPlateHTML(c)}</div>`).join('');
+}
+
+// ── ПОИСК: после выбора страны её номер переносится в строку поиска, поля открыты для ввода ──
+// Ввод символов ограничен реально существующими на номерах буквами/цифрами (SLOTS_DEF),
+// а регион — посимвольно проверяется по таблице REGIONS: следующий символ принимается,
+// только если он продолжает префикс хотя бы одного реально существующего региона.
+// Это исключает ввод несуществующих регионов (например "OO" у Украины), даже если каждая
+// буква по отдельности допустима в каких-то других кодах региона.
+let searchCountry=null;
+let searchVals={};
+let searchRegionCode='';
+
+// Компактная версия для самой строки поиска: только буквы/цифры с подчёркиванием,
+// без графики номера — всё в одну строку, чтобы уместиться в линии поиска.
+function searchInlineInputHTML(c, v, rc){
+  const D=(id)=>{
+    const isDigit=id[0]==='d';
+    const ch=v[id]!=null?v[id]:'';
+    return `<input class="search-inline-char" data-id="${id}" maxlength="1" value="${ch}" inputmode="${isDigit?'numeric':'text'}" autocomplete="off" autocorrect="off" autocapitalize="characters" spellcheck="false" oninput="onSearchCharInput(this)" onkeydown="onSearchCharKeydown(this,event)">`;
+  };
+  const R=(len)=>`<input class="search-inline-char search-inline-reg" data-id="region" id="search-reg-inp" maxlength="${len}" value="${rc}" inputmode="${c==='UA'?'text':'numeric'}" autocomplete="off" autocorrect="off" autocapitalize="characters" spellcheck="false" style="width:${len*13+6}px" oninput="onSearchRegInput(this)" onkeydown="onSearchCharKeydown(this,event)">`;
+  if(c==='RU'){
+    return `${D('l1')}${D('d1')}${D('d2')}${D('d3')}${D('l2')}${D('l3')}<span class="search-inline-sep"></span>${R(3)}`;
+  }else if(c==='UA'){
+    return `${R(2)}<span class="search-inline-sep"></span>${D('d1')}${D('d2')}${D('d3')}${D('d4')}${D('l1')}${D('l2')}`;
+  }else if(c==='BY'){
+    return `${D('d1')}${D('d2')}${D('d3')}${D('d4')}${D('l1')}${D('l2')}<span class="search-inline-sep"></span>${R(1)}`;
+  }else if(c==='KZ'){
+    return `${D('d1')}${D('d2')}${D('d3')}${D('l1')}${D('l2')}${D('l3')}<span class="search-inline-sep"></span>${R(2)}`;
+  }
+  return '';
+}
+
+function selectSearchCountry(c){
+  playClick();haptic('light');
+  searchCountry=c;
+  searchVals={};
+  searchRegionCode='';
+  renderSearchTopBar();
+  clearSearchResults();
+}
+function backToSearchCountryList(){
+  playClick();haptic('light');
+  searchCountry=null;
+  searchVals={};
+  searchRegionCode='';
+  renderSearchTopBar();
+  clearSearchResults();
+}
+function clearSearchResults(){
+  const results=document.getElementById('search-results');
+  if(results) results.innerHTML='';
+  updateSearchGoBtnVisibility();
+}
+// Стирает только старый результат поиска (не трогая видимость кнопки) — вызывается
+// при любом изменении вводимого номера, чтобы не показывать устаревший результат.
+function clearSearchResults_softly(){
+  const results=document.getElementById('search-results');
+  if(results) results.innerHTML='';
+}
+// Кнопка "Искать" появляется, как только в номер введён хоть один символ (буква/цифра/регион)
+function updateSearchGoBtnVisibility(){
+  const wrap=document.getElementById('search-go-wrap');
+  if(!wrap) return;
+  const anyChar = searchCountry && Object.values(searchVals).some(v=>!!v);
+  const show = !!searchCountry && (anyChar || !!searchRegionCode);
+  wrap.style.display = show ? 'block' : 'none';
+}
+function renderSearchTopBar(){
+  const bar=document.getElementById('search-top-bar-inner');
+  const list=document.getElementById('search-country-plates');
+  if(!bar) return;
+  if(!searchCountry){
+    bar.classList.remove('plate-state');
+    bar.classList.add('empty-state');
+    bar.innerHTML=`<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <span style="color:var(--muted);font-family:'Roboto Condensed',Arial,sans-serif;font-size:15px">${tApp('search_placeholder')}</span>`;
+    if(list) list.style.display='flex';
+  }else{
+    bar.classList.remove('empty-state');
+    bar.classList.add('plate-state');
+    bar.innerHTML=`<button class="settings-btn" onclick="backToSearchCountryList()" title="${tApp('back_title')}" style="width:26px;height:26px;flex-shrink:0">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+      </button>
+      <div id="search-top-plate" style="flex:1;min-width:0;display:flex;align-items:center;gap:4px;overflow-x:auto">${searchInlineInputHTML(searchCountry,searchVals,searchRegionCode)}</div>`;
+    if(list) list.style.display='none';
+  }
+}
+
+function onSearchCharInput(el){
+  const id=el.dataset.id;
+  let ch=(el.value||'').toUpperCase().slice(-1);
+  const slot=(SLOTS_DEF[searchCountry]||[]).find(s=>s.id===id);
+  const allowed=slot?slot.c:[];
+  if(ch && !allowed.includes(ch)) ch='';
+  el.value=ch;
+  searchVals[id]=ch||undefined;
+  if(ch) focusAdjacentSearchInput(el,1);
+  updateSearchGoBtnVisibility();
+  clearSearchResults_softly();
+}
+function onSearchCharKeydown(el,e){
+  if(e.key==='Backspace' && !el.value){
+    e.preventDefault();
+    focusAdjacentSearchInput(el,-1);
+  }
+}
+function _searchInputsList(){
+  return Array.from(document.querySelectorAll('#search-top-plate .search-inline-char'));
+}
+function focusAdjacentSearchInput(el,dir){
+  const list=_searchInputsList();
+  const idx=list.indexOf(el);
+  if(idx<0)return;
+  const next=list[idx+dir];
+  if(next){ next.focus(); if(next.select) next.select(); }
+}
+// Регион — посимвольная проверка по реальной таблице REGIONS (см. пояснение выше).
+function onSearchRegInput(el){
+  const c=searchCountry;
+  let raw=(el.value||'').toUpperCase();
+  if(c==='RU'||c==='KZ'||c==='BY') raw=raw.replace(/[^0-9]/g,'');
+  else raw=raw.replace(/[^A-ZА-ЯЁІЇЄ]/g,'');
+  const codes=Object.keys(REGIONS[c]||{});
+  let accepted='';
+  for(const ch of raw){
+    const cand=accepted+ch;
+    if(codes.some(code=>code.startsWith(cand))) accepted=cand;
+    else break;
+  }
+  el.value=accepted;
+  searchRegionCode=accepted;
+  if(accepted.length>=el.maxLength){
+    focusAdjacentSearchInput(el,1);
+  }
+  updateSearchGoBtnVisibility();
+  clearSearchResults_softly();
+}
+
 // ═══════════════════════════════════════════════════════════
 //  MAIN PLATE DISPLAY
 // ═══════════════════════════════════════════════════════════
@@ -1217,7 +1494,12 @@ function fitAllUaPlates(){
 let _uaFitResizeT=null;
 window.addEventListener('resize',()=>{
   clearTimeout(_uaFitResizeT);
-  _uaFitResizeT=setTimeout(fitAllUaPlates,120);
+  _uaFitResizeT=setTimeout(()=>{
+    fitAllUaPlates();
+    fitInvCardZooms('inv-list-panel');
+    fitInvCardZooms('inv-list-profile');
+    fitInvCardZooms('inv-list-profile-preview');
+  },120);
 });
 
 function buildPlate(){
@@ -1312,7 +1594,7 @@ function getPlateText(){
 // ═══════════════════════════════════════════════════════════
 //  SPIN
 // ═══════════════════════════════════════════════════════════
-function spinOnly(){
+async function spinOnly(){
   if(isSpinning)return;
   if(!REGIONS[country][regionCode]){
     const ri=document.querySelector('#plate-display #reg-inp');
@@ -1323,16 +1605,40 @@ function spinOnly(){
   isSpinning=true;randomRegionUsed=false;plateEmpty=false;totalSpins++;saveGame();apiSyncStats();
   const spinToken=++_spinToken;
   const spinCountry=country;
+  const spinRegion=regionCode;
   setSaveLocked(false);
   document.querySelectorAll('.btn').forEach(b=>b.disabled=true);
   playClick();
   const plateEl=document.querySelector('#plate-display .plate');
   if(plateEl)plateEl.classList.remove('empty');
 
-  const finalVals={};
-  SLOTS_DEF[country].forEach(s=>{
-      finalVals[s.id]=rnd(s.c);
-  });
+  // ── Уникальность решается ДО прокрутки, а не после ──
+  // Занятая комбинация не должна физически появиться на экране. Поэтому сначала
+  // резервируем на сервере гарантированно свободный набор символов для этой
+  // страны+региона (см. apiReserveUniquePlate — там же описан нужный контракт
+  // бэкенда/БД), и только полученный результат крутим визуально.
+  const reserved = await apiReserveUniquePlate(spinCountry, spinRegion);
+  if(spinToken!==_spinToken){ isSpinning=false; return; } // экран/страну сменили, пока ждали ответ сервера
+
+  let finalVals={};
+  if(reserved && reserved.ok && reserved.chars){
+    // Сервер уже атомарно зарезервировал этот номер — он гарантированно свободен
+    finalVals = charsToVals(spinCountry, reserved.chars);
+    currentPlateKey = reserved.plate_key || null;
+  } else if(reserved && reserved.ok===false && reserved.exhausted){
+    // В этом регионе не осталось ни одной свободной комбинации номера
+    isSpinning=false;
+    document.querySelectorAll('.btn').forEach(b=>b.disabled=false);
+    showToast(tApp('region_exhausted'),'error');
+    haptic('warning');
+    return;
+  } else {
+    // БД ещё не подключена (см. apiReserveUniquePlate) — временная локальная генерация,
+    // без проверки на занятость. Как только бэкенд будет подключён, эта ветка
+    // перестанет использоваться сама собой (сервер начнёт отвечать ok:true+chars).
+    SLOTS_DEF[country].forEach(s=>{ finalVals[s.id]=rnd(s.c); });
+    currentPlateKey = null;
+  }
 
   const dcEls=Array.from(document.querySelectorAll('#plate-display .dc[data-id]'));
   dcEls.forEach(el=>{
@@ -1360,19 +1666,6 @@ function spinOnly(){
           document.querySelectorAll('.btn').forEach(b=>b.disabled=false);
           if(country===spinCountry){
             plateEmpty=false;spunAtLeastOnce=true;setSaveLocked(false);haptic('medium');
-            // ── Регистрируем номер на сервере в фоне (не блокируем UI) ──
-            const chars=getCharsOnly();
-            apiClaimPlate(country,regionCode,chars).then(claim=>{
-              if(spinToken!==_spinToken) return;
-              if(claim&&!claim.ok&&claim.taken){
-                // Номер занят — уведомляем, но не перекручиваем принудительно
-                showToast(tApp('plate_taken'),'error');
-                haptic('warning');
-                currentPlateKey=null;
-              } else {
-                currentPlateKey=(claim&&claim.plate_key)||null;
-              }
-            }).catch(()=>{if(spinToken===_spinToken)currentPlateKey=null;});
           }
         },200)}
     },baseDelay+i*stagger);
@@ -1406,39 +1699,125 @@ function closePopup(){document.getElementById('popup').classList.remove('show')}
 // ═══════════════════════════════════════════════════════════
 //  INVENTORY
 // ═══════════════════════════════════════════════════════════
-// Сохранение номеров в инвентарь отключено по запросу — кнопка "Сохранить"
-// остаётся в интерфейсе, но больше ничего не делает.
-function saveToInventory(){}
+let _mintInFlight=false; // защита от повторного клика "Сохранить", пока идёт запрос номера минта
+async function saveToInventory(){
+  const btn=document.getElementById('btn-save');
+  // Кнопка "заблокирована" (ещё не крутили / уже сохранили этот номер) — ничего не делаем
+  if(btn && btn.classList.contains('locked')) return;
+  if(_mintInFlight) return; // уже идёт минт этого номера — игнорируем повторный клик
+  if(!spunAtLeastOnce || plateEmpty){
+    haptic('warning');playError();
+    showToast(tApp('spin_first'),'error');
+    return;
+  }
+  if(inventory.length>=10){
+    haptic('warning');playError();
+    showToast(tApp('inv_full'),'error');
+    return;
+  }
+  // Номер уже есть в инвентаре у этого игрока (та же страна+регион+номер) — не дублируем
+  const chars=getCharsOnly();
+  const isDup=inventory.some(it=>it.country===country && it.rc===regionCode && charsFromVals(it.country,it.vals)===chars);
+  if(isDup){
+    haptic('warning');playError();
+    showToast(tApp('plate_already_saved'),'error');
+    return;
+  }
+
+  playClick();haptic('medium');
+  _mintInFlight=true;
+  setSaveLocked(true); // блокируем кнопку сразу — защита от двойного клика/повторного минта того же номера
+  if(btn) btn.disabled=true;
+
+  const plateKeyForMint = currentPlateKey || `${country}_${regionCode}_${chars}`.toLowerCase();
+  // Постоянный номер минта (#1, #2, #3...) — присваивается ровно один раз, атомарно
+  // на сервере (см. apiMintPlate), и дальше уже никогда не меняется.
+  const mintRes = await apiMintPlate(plateKeyForMint, country, regionCode, chars);
+  _mintInFlight=false;
+  if(btn) btn.disabled=false;
+
+  inventory.push({
+    country, vals:{...vals}, rc:regionCode,
+    plate_key: plateKeyForMint,
+    mint_no: (mintRes && mintRes.ok && mintRes.mint_no) ? mintRes.mint_no : _nextLocalMintNo()
+  });
+  // Номер теперь принадлежит инвентарю — при выходе с экрана его больше не нужно
+  // освобождать на сервере (apiReleasePlate вызывается только для НЕсохранённых номеров,
+  // см. dropCurrentSpunPlate/selCountry/onRegInput), поэтому просто сбрасываем ключ здесь.
+  currentPlateKey=null;
+  renderInventory();
+  saveGame();
+  showToast(tApp('saved_toast'));
+}
 
 function renderInventory(){
-  // render into both the old hidden list and the panel list
+  // render into every place the inventory is shown: bottom-nav "МОИ НОМЕРА"
+  // и превью прямо в профиле (полный список открывается через "Смотреть все")
   _renderInvInto('inv-list-panel');
+  _renderInvInto('inv-list-profile');
+  _renderInvInto('inv-list-profile-preview', null, true); // в профиле — в 2 строки, листается вправо
   // update count badge
   const cnt=document.getElementById('bpanel-inv-count');
   if(cnt) cnt.textContent=`${inventory.length} / 10`;
+  // "Смотреть все" в профиле показываем только если есть что смотреть
+  const viewAllBtn=document.getElementById('profile-plates-view-all');
+  if(viewAllBtn) viewAllBtn.style.display = inventory.length ? 'flex' : 'none';
 }
 
-function _renderInvInto(listId){
+function _renderInvInto(listId, limit, horizontal){
   const list=document.getElementById(listId);
   if(!list) return;
   // Магазин улучшений удалён — номера в инвентаре всегда рендерятся в базовом виде,
   // сортировка только по новизне (новые сначала).
   const platesHTML=()=>{
     if(!inventory.length) return `<div class="inv-empty">${tApp('inv_empty')}</div>`;
-    const sorted=[...inventory.map((item,i)=>({item,i}))].sort((a,b)=>b.i-a.i);
+    let sorted=[...inventory.map((item,i)=>({item,i}))].sort((a,b)=>b.i-a.i);
+    if(limit) sorted=sorted.slice(0,limit); // превью в профиле — только последние N штук
     return sorted.map(({item,i})=>{
       const html=plateHTML(item.country,item.vals,item.rc,'',true);
-      return `<div style="position:relative;width:100%">
-        ${html.replace('class="plate ','class="inv-plate-item plate ')}
-        <button class="inv-plate-del" onclick="removeFromInventory(${i})" title="Удалить"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M9 3h6l1 1h4v2H4V4h4l1-1zm-1 5h8l-.8 13H8.8L8 8zm2 2v9h1V10h-1zm3 0v9h1V10h-1z"/></svg></button>
+      const chars=charsFromVals(item.country,item.vals);
+      const mintLabel = item.mint_no ? `#${item.mint_no}` : '';
+      return `<div class="inv-card" onclick="openPlateDetail(${i})">
+        <div class="inv-card-plate-wrap"><div class="inv-card-plate-zoom">${html}</div></div>
+        <div class="inv-card-footer">
+          <span class="inv-card-chars">${chars} ${item.rc}</span>
+          <span class="inv-card-mint">${mintLabel}</span>
+        </div>
       </div>`;
     }).join('');
   };
 
+  const gridClass = horizontal ? 'inv-preview-scroll' : 'inv-list-grid';
   list.innerHTML=`
-    <div id="${listId}-inner" style="display:flex;flex-direction:column;gap:8px">${platesHTML()}</div>
+    <div id="${listId}-inner" class="${gridClass}">${platesHTML()}</div>
   `;
-  requestAnimationFrame(fitAllUaPlates);
+  // Сначала даём UA-номерам подогнать внутренние отступы букв, потом уже
+  // считаем масштаб карточек — иначе замер ширины будет неточным.
+  requestAnimationFrame(()=>{
+    fitAllUaPlates();
+    fitInvCardZooms(listId);
+  });
+}
+
+// Подбирает точный zoom для каждой карточки в инвентаре так, чтобы номер
+// занимал всю доступную ширину карточки, но не обрезался и не вылезал за неё —
+// в отличие от фиксированного zoom, работает одинаково хорошо на любой ширине экрана.
+function fitInvCardZooms(listId){
+  const root=document.getElementById(`${listId}-inner`);
+  if(!root) return;
+  root.querySelectorAll('.inv-card-plate-wrap').forEach(wrap=>{
+    const zoomEl=wrap.querySelector('.inv-card-plate-zoom');
+    const plateEl=zoomEl&&zoomEl.querySelector('.plate');
+    if(!zoomEl||!plateEl) return;
+    zoomEl.style.zoom=1; // временно снимаем масштаб, чтобы измерить реальный размер номера
+    const wrapW=wrap.clientWidth;
+    const naturalW=plateEl.scrollWidth||plateEl.offsetWidth;
+    if(wrapW>0 && naturalW>0){
+      zoomEl.style.zoom=Math.max(0.15, (wrapW/naturalW)*0.97);
+    } else {
+      zoomEl.style.zoom=0.34; // на всякий случай — если размеры ещё не готовы
+    }
+  });
 }
 
 // ── BOTTOM PANELS ──
@@ -1465,6 +1844,7 @@ function closeBPanelIfBg(e,id){
     let currentY = 0;
     let dragging = false;   // true = we're controlling the sheet
     let locked   = false;   // true = decided to let scroll handle it
+    let armed    = false;   // true = this touch sequence started on the header — only then do we react at all
     let sheetH   = 0;
 
     // Find the first scrollable child (if any)
@@ -1481,7 +1861,12 @@ function closeBPanelIfBg(e,id){
     }
 
     function onTouchStart(e){
-      if(e.target.closest('button,input,select,a,textarea')) return;
+      // Свайп для закрытия шторки должен стартовать только с шапки (где заголовок
+      // "Фильтр"/"Страна"/"Регион" и полоска-хэндл), а не с любой точки листа —
+      // иначе перетаскивание по списку (например по кнопкам регионов) ошибочно
+      // перехватывается этим обработчиком и обычный скролл списка ломается.
+      armed = !!e.target.closest('.settings-hdr') && !e.target.closest('button,input,select,a,textarea');
+      if(!armed) return;
       startY   = e.touches[0].clientY;
       startX   = e.touches[0].clientX;
       currentY = startY;
@@ -1491,6 +1876,7 @@ function closeBPanelIfBg(e,id){
     }
 
     function onTouchMove(e){
+      if(!armed) return;   // touch didn't start on the header — never intercept, let scroll happen natively
       if(locked) return; // let native scroll handle it
 
       const dy = e.touches[0].clientY - startY;
@@ -1502,19 +1888,14 @@ function closeBPanelIfBg(e,id){
         // Mostly horizontal swipe → ignore
         if(Math.abs(dx) > Math.abs(dy)){ locked = true; return; }
 
-        // Swipe UP → check if inner content can scroll up; if so, let it
+        // Swipe UP → not a close gesture
         if(dy < 0){
           locked = true;
           return;
         }
 
-        // Swipe DOWN → only take over if the scroller is at the top
-        const scroller = getScroller();
-        if(scroller && scroller.scrollTop > 2){
-          locked = true; // content is scrolled, let it scroll back up
-          return;
-        }
-
+        // Свайп стартует только с шапки (см. onTouchStart), поэтому неважно,
+        // насколько прокручен список внутри шторки — тянем сразу саму шторку.
         dragging = true;
       }
 
@@ -1528,6 +1909,8 @@ function closeBPanelIfBg(e,id){
     }
 
     function onTouchEnd(){
+      if(!armed){ dragging = false; locked = false; return; }
+      armed = false;
       if(!dragging){ dragging = false; locked = false; return; }
       dragging = false;
       locked   = false;
@@ -1558,9 +1941,19 @@ function closeBPanelIfBg(e,id){
 
   document.addEventListener('DOMContentLoaded', ()=>{
 
-    // ── settings bottom-sheet ──
-    const settSheet = document.querySelector('.settings-sheet');
-    if(settSheet) attachSwipe(settSheet, ()=> closeThemeLangMenu());
+    // ── все нижние шторки (settings-sheet), включая меню фильтров рынка ──
+    document.querySelectorAll('.settings-sheet').forEach(sheet=>{
+      const overlay = sheet.closest('.settings-overlay');
+      if(!overlay || !overlay.id) return;
+      const closeFnName = {
+        'theme-lang-overlay':    'closeThemeLangMenu',
+        'market-filter-overlay': 'closeMarketFilterMenu',
+        'market-country-overlay':'closeMarketCountryMenu',
+        'market-region-overlay': 'closeMarketRegionMenu'
+      }[overlay.id];
+      const closeFn = closeFnName && window[closeFnName];
+      if(typeof closeFn === 'function') attachSwipe(sheet, closeFn);
+    });
 
   });
 
@@ -1593,17 +1986,63 @@ function confirmCancel(){
   _confirmCallback=null;
 }
 
-function removeFromInventory(i){
+// Удаление номеров из инвентаря отключено полностью — сохранённый номер удалить нельзя
+
+// ── ДЕТАЛИ НОМЕРА: открывается тапом по карточке в инвентаре ──
+function openPlateDetail(i){
   const item=inventory[i];
-  if(!item)return;
-  const msg=tApp('confirm_delete_plate');
-  const doDelete=()=>{
-    // Освобождаем номер на сервере
-    if(item.plate_key) apiReleasePlate(item.plate_key);
-    inventory.splice(i,1);
-    renderInventory();haptic('light');saveGame();
-  };
-  showConfirm('',msg,'',doDelete);
+  if(!item) return;
+  playClick();haptic('light');
+  const html=plateHTML(item.country,item.vals,item.rc,'',true);
+  const chars=charsFromVals(item.country,item.vals);
+  const mintLabel=item.mint_no?`#${item.mint_no}`:'—';
+  const countryName=tApp('country_'+item.country.toLowerCase());
+  const flag=COUNTRY_FLAGS[item.country]||'';
+  const body=document.getElementById('plate-detail-body');
+  if(body){
+    body.innerHTML=`
+      <div class="pd-avatar-wrap"><div class="pd-avatar-zoom">${html}</div></div>
+      <div class="pd-title-row">
+        <span class="pd-title-chars">${chars} ${item.rc}</span>
+        <span class="pd-title-mint">${mintLabel}</span>
+      </div>
+      <button class="pd-sell-btn" onclick="sellPlateFromInventory(${i})">
+        <span class="pd-sell-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="6 11 12 5 18 11"/></svg></span>
+        <span>${tApp('sell_btn')}</span>
+      </button>
+      <div class="pd-stats">
+        <div class="pd-stat-row"><span class="pd-stat-label">${tApp('pd_country')}</span><span class="pd-stat-value">${flag} ${countryName}</span></div>
+        <div class="pd-stat-row"><span class="pd-stat-label">${tApp('pd_region')}</span><span class="pd-stat-value">${item.rc}</span></div>
+        <div class="pd-stat-row"><span class="pd-stat-label">${tApp('pd_number')}</span><span class="pd-stat-value">${chars}</span></div>
+        <div class="pd-stat-row"><span class="pd-stat-label">${tApp('pd_mint')}</span><span class="pd-stat-value">${mintLabel}</span></div>
+      </div>
+    `;
+    requestAnimationFrame(()=>{
+      fitAllUaPlates();
+      const zoomEl=body.querySelector('.pd-avatar-zoom');
+      const plateEl=zoomEl&&zoomEl.querySelector('.plate');
+      const wrap=body.querySelector('.pd-avatar-wrap');
+      if(zoomEl&&plateEl&&wrap){
+        zoomEl.style.zoom=1;
+        const wrapW=wrap.clientWidth;
+        const naturalW=plateEl.scrollWidth||plateEl.offsetWidth;
+        if(wrapW>0&&naturalW>0) zoomEl.style.zoom=Math.min(1,(wrapW/naturalW)*0.86);
+      }
+    });
+  }
+  document.getElementById('plate-detail-overlay')?.classList.add('show');
+}
+function closePlateDetail(){
+  playClick();haptic('light');
+  document.getElementById('plate-detail-overlay')?.classList.remove('show');
+}
+function closePlateDetailIfBg(e){
+  if(e.target===document.getElementById('plate-detail-overlay')) closePlateDetail();
+}
+// Продажи пока нет — маркетплейс не подключён, просто сообщаем об этом
+function sellPlateFromInventory(i){
+  haptic('light');playClick();
+  showToast(tApp('sell_coming_soon'));
 }
 
 // ═══════════════════════════════════════════════════════════
@@ -1626,7 +2065,7 @@ function showToast(msg,type=''){
 // ═══════════════════════════════════════════════════════════
 //  THEME MENU
 // ═══════════════════════════════════════════════════════════
-let currentTheme='light';
+// currentTheme убран — тема больше не переключается
 
 function openThemeLangMenu(){
   if(_bnavCurrent==='main') dropCurrentSpunPlate();
@@ -1641,9 +2080,194 @@ function closeThemeLangIfBg(e){
   if(e.target===document.getElementById('theme-lang-overlay')) closeThemeLangMenu();
 }
 
+// ── ФИЛЬТР РЫНКА: выезжает снизу по кнопке-фильтру на экране "Рынок" ──
+let marketFilterValue='price_asc';
+function openMarketFilterMenu(){
+  playClick();haptic('light');
+  updateMarketFilterUI();
+  document.getElementById('market-filter-overlay')?.classList.add('show');
+}
+function closeMarketFilterMenu(){
+  playClick();haptic('light');
+  document.getElementById('market-filter-overlay')?.classList.remove('show');
+}
+function closeMarketFilterIfBg(e){
+  if(e.target===document.getElementById('market-filter-overlay')) closeMarketFilterMenu();
+}
+function updateMarketFilterUI(){
+  document.querySelectorAll('.market-filter-row').forEach(row=>{
+    row.classList.toggle('active', row.dataset.val===marketFilterValue);
+  });
+}
+// Показывает «Очистить фильтры», только если хоть один фильтр отличается от исходного состояния
+function updateClearMarketFiltersVisibility(){
+  const btn=document.getElementById('market-clear-filters-btn');
+  if(!btn) return;
+  const changed = marketFilterValue!=='price_asc'
+    || marketFilterPriceFrom!==null
+    || marketFilterPriceTo!==null
+    || !!marketFilterCountry
+    || marketFilterRegions.size>0;
+  btn.style.display = changed ? 'flex' : 'none';
+}
+function selectMarketFilter(val){
+  playClick();haptic('light');
+  marketFilterValue=val;
+  updateMarketFilterUI();
+  updateClearMarketFiltersVisibility();
+}
+
+// Диапазон цен — независим от сортировки выше, ввод в поля её не сбрасывает
+let marketFilterPriceFrom=null, marketFilterPriceTo=null;
+function onMarketPriceRangeInput(){
+  const fromEl=document.getElementById('market-filter-price-from');
+  const toEl=document.getElementById('market-filter-price-to');
+  marketFilterPriceFrom = fromEl && fromEl.value!=='' ? Number(fromEl.value) : null;
+  marketFilterPriceTo = toEl && toEl.value!=='' ? Number(toEl.value) : null;
+  // marketFilterValue (сортировка "дешевые/дорогие/недавние/давние") намеренно не трогаем
+  updateClearMarketFiltersVisibility();
+}
+
+// Сбрасывает все фильтры рынка разом: сортировку, цену, страну и регионы
+function clearMarketFilters(){
+  playClick();haptic('light');
+  marketFilterValue='price_asc';
+  marketFilterPriceFrom=null;
+  marketFilterPriceTo=null;
+  const fromEl=document.getElementById('market-filter-price-from');
+  const toEl=document.getElementById('market-filter-price-to');
+  if(fromEl) fromEl.value='';
+  if(toEl) toEl.value='';
+  marketFilterCountry=null;
+  marketFilterRegions.clear();
+  updateMarketFilterUI();
+  updateMarketCountryBtnLabel();
+  updateMarketRegionBtnLabel();
+  updateClearMarketFiltersVisibility();
+}
+
+// ── ФИЛЬТР РЫНКА: СТРАНА (можно выбрать только одну; повторный тап снимает выбор) ──
+let marketFilterCountry=null;
+const MARKET_COUNTRIES=['RU','UA','BY','KZ'];
+function renderMarketCountryList(){
+  const list=document.getElementById('market-country-list');
+  if(!list) return;
+  list.innerHTML=MARKET_COUNTRIES.map((c,i)=>`
+    <button class="market-country-row${marketFilterCountry===c?' active':''}" data-val="${c}" onclick="selectMarketCountry('${c}')">
+      <span class="flag">${COUNTRY_FLAGS[c]}</span>
+      <span>${tApp('country_'+c.toLowerCase())}</span>
+      <span class="check"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
+    </button>${i<MARKET_COUNTRIES.length-1?'<div class="settings-divider"></div>':''}`).join('');
+}
+function openMarketCountryMenu(){
+  playClick();haptic('light');
+  renderMarketCountryList();
+  document.getElementById('market-country-overlay')?.classList.add('show');
+}
+function closeMarketCountryMenu(){
+  playClick();haptic('light');
+  document.getElementById('market-country-overlay')?.classList.remove('show');
+}
+function closeMarketCountryIfBg(e){
+  if(e.target===document.getElementById('market-country-overlay')) closeMarketCountryMenu();
+}
+function updateMarketCountryBtnLabel(){
+  const label=document.getElementById('market-country-btn-label');
+  const btn=document.getElementById('market-country-btn');
+  if(!label) return;
+  if(marketFilterCountry){
+    label.textContent = tApp('country_'+marketFilterCountry.toLowerCase());
+    label.style.color = 'var(--accent)';
+    if(btn) btn.style.color = 'var(--accent)';
+  } else {
+    label.textContent = tApp('filter_country_label');
+    label.style.color = '';
+    if(btn) btn.style.color = '';
+  }
+}
+function selectMarketCountry(c){
+  playClick();haptic('light');
+  if(marketFilterCountry===c){
+    marketFilterCountry=null; // повторный выбор той же страны — снимаем выбор
+  } else {
+    marketFilterCountry=c;
+  }
+  marketFilterRegions.clear(); // регионы относятся к прошлой стране — сбрасываем
+  updateMarketCountryBtnLabel();
+  updateMarketRegionBtnLabel();
+  updateClearMarketFiltersVisibility();
+  renderMarketCountryList(); // меню остаётся открытым, просто перерисовываем галочку
+}
+
+// ── ФИЛЬТР РЫНКА: РЕГИОН (зависит от выбранной страны, можно выбрать несколько) ──
+let marketFilterRegions=new Set();
+function renderMarketRegionList(){
+  const list=document.getElementById('market-region-list');
+  if(!list) return;
+  if(!marketFilterCountry){
+    list.innerHTML=`
+      <div style="padding:18px 6px 26px;text-align:center;color:var(--muted);font-size:14px;line-height:1.5">
+        <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-bottom:10px"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        <div>${tApp('filter_region_pick_country_first')}</div>
+      </div>`;
+    return;
+  }
+  const regionMap=REGIONS[marketFilterCountry]||{};
+  const codes=Object.keys(regionMap);
+  // Числовые коды (RU/BY/KZ) сортируем по значению, буквенные (UA) — по алфавиту
+  const allNumeric=codes.every(c=>/^\d+$/.test(c));
+  codes.sort(allNumeric ? (a,b)=>Number(a)-Number(b) : undefined);
+  list.innerHTML=`<div class="market-filter-list-scroll">${codes.map((code,i)=>`
+    <button class="market-country-row${marketFilterRegions.has(code)?' active':''}" data-val="${code.replace(/"/g,'&quot;')}" onclick="selectMarketRegion('${code.replace(/'/g,"\\'")}')">
+      <span>${code}</span>
+      <span class="check"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
+    </button>${i<codes.length-1?'<div class="settings-divider"></div>':''}`).join('')}</div>`;
+}
+function openMarketRegionMenu(){
+  playClick();haptic('light');
+  renderMarketRegionList();
+  document.getElementById('market-region-overlay')?.classList.add('show');
+}
+function closeMarketRegionMenu(){
+  playClick();haptic('light');
+  document.getElementById('market-region-overlay')?.classList.remove('show');
+}
+function closeMarketRegionIfBg(e){
+  if(e.target===document.getElementById('market-region-overlay')) closeMarketRegionMenu();
+}
+function updateMarketRegionBtnLabel(){
+  const label=document.getElementById('market-region-btn-label');
+  const btn=document.getElementById('market-region-btn');
+  if(!label) return;
+  const codes=[...marketFilterRegions];
+  if(codes.length===0){
+    label.textContent=tApp('filter_region_label');
+    label.style.color='';
+    if(btn) btn.style.color='';
+  } else {
+    label.textContent = codes.length<=2 ? codes.join(', ') : codes.slice(0,2).join(', ')+', ...';
+    label.style.color='var(--accent)';
+    if(btn) btn.style.color='var(--accent)';
+  }
+}
+function selectMarketRegion(code){
+  playClick();haptic('light');
+  if(marketFilterRegions.has(code)) marketFilterRegions.delete(code); // повторный выбор того же региона — снимаем выбор
+  else marketFilterRegions.add(code);
+  updateMarketRegionBtnLabel();
+  updateClearMarketFiltersVisibility();
+  renderMarketRegionList(); // меню остаётся открытым, просто перерисовываем галочки
+}
+
 // ── ПОИСК: открывается по кнопке-лупе в шапке, крестик возвращает на главный экран ──
 function openSearchOverlay(){
   playClick();haptic('light');
+  searchCountry=null;
+  searchVals={};
+  searchRegionCode='';
+  renderSearchTopBar();
+  buildSearchCountryPlates();
+  clearSearchResults();
   document.getElementById('search-overlay')?.classList.add('show');
 }
 function closeSearchOverlay(){
@@ -1651,62 +2275,24 @@ function closeSearchOverlay(){
   document.getElementById('search-overlay')?.classList.remove('show');
 }
 
-// ── УРОВЕНЬ ПРОФИЛЯ: пустое меню, открывается по клику на круг в профиле ──
-function openLevelOverlay(){
+// ── НОМЕРНЫЕ ЗНАКИ: инвентарь сохранённых номеров, открывается из профиля ──
+function openPlatesInventoryMenu(){
+  if(!tonWalletFullAddress) return; // без подключённого кошелька инвентарь недоступен
   playClick();haptic('light');
-  document.getElementById('level-overlay')?.classList.add('show');
+  renderInventory(); // на случай если список успел устареть с момента последнего сохранения/удаления
+  document.getElementById('plates-inventory-overlay')?.classList.add('show');
 }
-function closeLevelOverlay(){
+function closePlatesInventoryMenu(){
   playClick();haptic('light');
-  document.getElementById('level-overlay')?.classList.remove('show');
+  document.getElementById('plates-inventory-overlay')?.classList.remove('show');
 }
 
-// Обновляет цифру уровня и кольцо прогресса вокруг неё.
-// progressFraction — реальная доля выполнения текущего уровня (0..1), считается из ХП профиля.
-// Пока системы ХП/опыта нет — уровень 1, прогресс 0 (пустое кольцо). Когда появится
-// логика начисления ХП — вызывать эту функцию с реальными level/progressFraction.
-const LEVEL_RING_CIRCUMFERENCE = 276.46; // 2*PI*44
-function updateProfileLevelUI(level, progressFraction){
-  const numEl=document.getElementById('profile-level-num');
-  const ringEl=document.getElementById('level-progress-ring');
-  if(numEl) numEl.textContent=String(level);
-  if(ringEl){
-    const p=Math.max(0,Math.min(1,progressFraction||0));
-    ringEl.style.strokeDashoffset=String(LEVEL_RING_CIRCUMFERENCE*(1-p));
-  }
-}
-updateProfileLevelUI(1,0);
-function setTheme(theme){
-  currentTheme=theme;
-  document.documentElement.classList.add('no-transitions');
-  document.documentElement.setAttribute('data-theme', theme==='dark'?'dark':'light');
-  updateThemeLangUI();
-  try{localStorage.setItem('cp_theme', theme);}catch(e){}
-  saveGame();
-  haptic('light');
-  playClick();
-  
-  // Force reflow and remove class
-  void document.documentElement.offsetHeight;
-  setTimeout(() => {
-    document.documentElement.classList.remove('no-transitions');
-  }, 40);
-}
+// Переключение тем удалено — в приложении единая тёмно-синяя тема, менять её нельзя
 function updateThemeLangUI(){
-  const bl=document.getElementById('theme-btn-light');
-  const bd=document.getElementById('theme-btn-dark');
-  if(bl) bl.classList.toggle('active', currentTheme==='light');
-  if(bd) bd.classList.toggle('active', currentTheme==='dark');
   updateLangFlagsUI();
   updateSoundToggleUI();
 }
 function loadThemeLangPrefs(){
-  let theme='light';
-  try{
-    theme=localStorage.getItem('cp_theme')||'light';
-  }catch(e){}
-  currentTheme=theme;
-  document.documentElement.setAttribute('data-theme', theme==='dark'?'dark':'light');
   try{
     const s=localStorage.getItem('cp_sound');
     if(s!==null) settingSound = s==='1';
@@ -1714,9 +2300,7 @@ function loadThemeLangPrefs(){
   updateThemeLangUI();
   initI18n();
 }
-function applyTheme(){
-  document.body.classList.add('theme-light');
-}
+function applyTheme(){}
 
 // ═══════════════════════════════════════════════════════════
 //  I18N — переводы интерфейса (i18next)
@@ -1725,11 +2309,11 @@ const APP_LANGS=['ru','en','zh','uz','ja'];
 let currentAppLang='ru';
 
 const I18N_RESOURCES={
-  ru:{translation:{nav_market:'РЫНОК', nav_play:'ИГРА', nav_inventory:'МОИ НОМЕРА', hdr_inventory:'МОИ НОМЕРА', hdr_profile:'ПРОФИЛЬ', inv_title:'НОМЕРНЫЕ ЗНАКИ', btn_spin:'КРУТИТЬ', player_default:'Игрок', btn_cancel:'ОТМЕНА', btn_no:'НЕТ', confirm_ok:'ДА', wallet_disconnect_confirm:'Вы точно хотите отвязать кошелёк', avatar_delete_confirm:'Удалить текущую аватарку?', search_placeholder:'Поиск...', profile_total_spun_short:'Всего прокрутил:', profile_reg_date_short:'Дата регистрации:', ton_connect_btn:'Подключить кошелёк', ton_connect_prompt:'Подключите кошелёк, чтобы торговать', ton_copied:'Адрес скопирован', ton_copy_failed:'Не удалось скопировать', ton_sdk_not_ready:'Кошелёк ещё загружается, попробуйте через секунду', settings_sound:'Воспроизводить звуки', zientres_channel_label:'Канал', zientres_chat_label:'Чат', country_ru:'Россия', country_ua:'Украина', country_by:'Беларусь', country_kz:'Казахстан', plate_taken:'ЭТОТ НОМЕР УЖЕ ЗАНЯТ — КРУТИ СНОВА', spin_first:'СНАЧАЛА ПРОКРУТИ НОМЕР', spin_after_region:'ПРОКРУТИ НОМЕР ПОСЛЕ ВЫБОРА РЕГИОНА', inv_full:'ИНВЕНТАРЬ ПОЛОН (МАКС. 10)', region_invalid:'УКАЖИ ВЕРНЫЙ РЕГИОН', plate_already_saved:'НОМЕР УЖЕ СОХРАНЁН', saved_toast:'СОХРАНЕНО', inv_empty:'У вас нет номеров', sent_toast:'ОТПРАВЛЕНО', popup_region_invalid_title:'РЕГИОН НЕ СУЩЕСТВУЕТ', popup_ok:'ПОНЯТНО', region_not_exist:'Регион «{{code}}» не существует', share_title:'ПОДЕЛИТЬСЯ', share_btn:'ПОДЕЛИТЬСЯ В TELEGRAM', share_msg:'Выбил номер {{plate}}!\nПопробуй и ты → @carzplate_bot', confirm_delete_plate:'Ты точно хочешь удалить номерной знак?', popup_hint_RU:'Пример: <b>777</b> — Москва, <b>98</b> — СПб, <b>23</b> — Краснодар.', popup_hint_UA:'Пример: <b>AA</b> — Киев, <b>AT</b> — Ивано-Франковск, <b>AB</b> — Винница.<br>Пиши на английской раскладке.', popup_hint_BY:'Цифру 1–7. Пример: <b>7</b> — г. Минск, <b>1</b> — Брестская область.', popup_hint_KZ:'Код 01–20. Пример: <b>01</b> — Астана, <b>02</b> — Алматы.'}},
-  en:{translation:{nav_market:'MARKET', nav_play:'PLAY', nav_inventory:'MY PLATES', hdr_inventory:'MY PLATES', hdr_profile:'PROFILE', inv_title:'LICENSE PLATES', btn_spin:'SPIN', player_default:'Player', btn_cancel:'CANCEL', btn_no:'NO', confirm_ok:'YES', wallet_disconnect_confirm:'Are you sure you want to unlink your wallet', avatar_delete_confirm:'Delete your current avatar?', search_placeholder:'Search...', profile_total_spun_short:'Total spins:', profile_reg_date_short:'Registration date:', ton_connect_btn:'Connect wallet', ton_connect_prompt:'Connect your wallet to trade', ton_copied:'Address copied', ton_copy_failed:'Failed to copy', ton_sdk_not_ready:'Wallet is still loading, try again in a second', settings_sound:'Play sounds', zientres_channel_label:'Channel', zientres_chat_label:'Chat', country_ru:'Russia', country_ua:'Ukraine', country_by:'Belarus', country_kz:'Kazakhstan', plate_taken:'THIS PLATE IS TAKEN — SPIN AGAIN', spin_first:'SPIN THE PLATE FIRST', spin_after_region:'SPIN THE PLATE AFTER PICKING A REGION', inv_full:'INVENTORY FULL (MAX 10)', region_invalid:'PICK A VALID REGION', plate_already_saved:'PLATE ALREADY SAVED', saved_toast:'SAVED', inv_empty:'You have no plates', sent_toast:'SENT', popup_region_invalid_title:"REGION DOESN'T EXIST", popup_ok:'GOT IT', region_not_exist:'Region "{{code}}" does not exist', share_title:'SHARE', share_btn:'SHARE ON TELEGRAM', share_msg:'I got the plate {{plate}}!\nTry it yourself → @carzplate_bot', confirm_delete_plate:'Are you sure you want to delete this plate?', popup_hint_RU:'Example: <b>777</b> — Moscow, <b>98</b> — St. Petersburg, <b>23</b> — Krasnodar.', popup_hint_UA:'Example: <b>AA</b> — Kyiv, <b>AT</b> — Ivano-Frankivsk, <b>AB</b> — Vinnytsia.<br>Type using the English (Latin) keyboard layout.', popup_hint_BY:'A digit 1–7. Example: <b>7</b> — Minsk, <b>1</b> — Brest region.', popup_hint_KZ:'Code 01–20. Example: <b>01</b> — Astana, <b>02</b> — Almaty.'}},
-  zh:{translation:{nav_market:'市场', nav_play:'游戏', nav_inventory:'我的车牌', hdr_inventory:'我的车牌', hdr_profile:'个人资料', inv_title:'车牌', btn_spin:'转动', player_default:'玩家', btn_cancel:'取消', btn_no:'否', confirm_ok:'是', wallet_disconnect_confirm:'确定要解绑钱包吗', avatar_delete_confirm:'删除当前头像？', search_placeholder:'搜索...', profile_total_spun_short:'总旋转次数：', profile_reg_date_short:'注册日期：', ton_connect_btn:'连接钱包', ton_connect_prompt:'连接钱包以进行交易', ton_copied:'地址已复制', ton_copy_failed:'复制失败', ton_sdk_not_ready:'钱包正在加载，请稍后重试', settings_sound:'播放音效', zientres_channel_label:'频道', zientres_chat_label:'聊天', country_ru:'俄罗斯', country_ua:'乌克兰', country_by:'白俄罗斯', country_kz:'哈萨克斯坦', plate_taken:'该车牌已被占用 — 请重新转动', spin_first:'请先转动车牌', spin_after_region:'选择地区后请重新转动车牌', inv_full:'车牌栏已满（最多10个）', region_invalid:'请选择有效地区', plate_already_saved:'该车牌已保存', saved_toast:'已保存', inv_empty:'你还没有车牌', sent_toast:'已发送', popup_region_invalid_title:'地区不存在', popup_ok:'知道了', region_not_exist:'地区「{{code}}」不存在', share_title:'分享', share_btn:'分享到 TELEGRAM', share_msg:'我抽到了车牌 {{plate}}！\n你也来试试 → @carzplate_bot', confirm_delete_plate:'确定要删除这个车牌吗？', popup_hint_RU:'例如：<b>777</b> — 莫斯科，<b>98</b> — 圣彼得堡，<b>23</b> — 克拉斯诺达尔。', popup_hint_UA:'例如：<b>AA</b> — 基辅，<b>AT</b> — 伊万诺-弗兰科夫斯克，<b>AB</b> — 文尼察。<br>请使用英文（拉丁字母）键盘输入。', popup_hint_BY:'数字 1–7。例如：<b>7</b> — 明斯克，<b>1</b> — 布列斯特州。', popup_hint_KZ:'代码 01–20。例如：<b>01</b> — 阿斯塔纳，<b>02</b> — 阿拉木图。'}},
-  uz:{translation:{nav_market:'BOZOR', nav_play:"OʻYIN", nav_inventory:'MENING RAQAMLARIM', hdr_inventory:'MENING RAQAMLARIM', hdr_profile:'PROFIL', inv_title:'DAVLAT RAQAMLARI', btn_spin:'AYLANTIRISH', player_default:"Oʻyinchi", btn_cancel:'BEKOR QILISH', btn_no:"YO'Q", confirm_ok:'HA', wallet_disconnect_confirm:'Hamyoningizni chindan ham uzmoqchimisiz', avatar_delete_confirm:'Joriy avatarni oʻchirasizmi?', search_placeholder:'Qidiruv...', profile_total_spun_short:'Jami aylantirildi:', profile_reg_date_short:"Roʻyxatdan oʻtgan sana:", ton_connect_btn:'Hamyonni ulash', ton_connect_prompt:'Savdo qilish uchun hamyoningizni ulang', ton_copied:'Manzil nusxalandi', ton_copy_failed:'Nusxalab boʻlmadi', ton_sdk_not_ready:'Hamyon hali yuklanmoqda, birozdan keyin urinib koʻring', settings_sound:'Ovozlarni ijro etish', zientres_channel_label:'Kanal', zientres_chat_label:'Chat', country_ru:'Rossiya', country_ua:'Ukraina', country_by:'Belarus', country_kz:"Qozogʻiston", plate_taken:'BU RAQAM BAND — QAYTA AYLANTIRING', spin_first:'AVVAL RAQAMNI AYLANTIRING', spin_after_region:'HUDUDNI TANLAGANDAN KEYIN RAQAMNI AYLANTIRING', inv_full:'INVENTAR TOʻLDI (MAKS. 10)', region_invalid:"TOʻGʻRI HUDUDNI KOʻRSATING", plate_already_saved:'RAQAM ALLAQACHON SAQLANGAN', saved_toast:'SAQLANDI', inv_empty:"Sizda raqamlar yoʻq", sent_toast:'YUBORILDI', popup_region_invalid_title:'HUDUD MAVJUD EMAS', popup_ok:'TUSHUNARLI', region_not_exist:'«{{code}}» hududi mavjud emas', share_title:'ULASHISH', share_btn:'TELEGRAMDA ULASHISH', share_msg:'{{plate}} raqamini urdim!\nSiz ham urinib koʻring → @carzplate_bot', confirm_delete_plate:"Raqamni oʻchirmoqchimisiz?", popup_hint_RU:'Masalan: <b>777</b> — Moskva, <b>98</b> — Sankt-Peterburg, <b>23</b> — Krasnodar.', popup_hint_UA:'Masalan: <b>AA</b> — Kiyev, <b>AT</b> — Ivano-Frankivsk, <b>AB</b> — Vinnitsa.<br>Inglizcha (lotin) klaviatura tartibida yozing.', popup_hint_BY:'1–7 raqami. Masalan: <b>7</b> — Minsk, <b>1</b> — Brest viloyati.', popup_hint_KZ:'01–20 kodi. Masalan: <b>01</b> — Astana, <b>02</b> — Almati.'}},
-  ja:{translation:{nav_market:'マーケット', nav_play:'プレイ', nav_inventory:'マイナンバープレート', hdr_inventory:'マイナンバープレート', hdr_profile:'プロフィール', inv_title:'ナンバープレート', btn_spin:'まわす', player_default:'プレイヤー', btn_cancel:'キャンセル', btn_no:'いいえ', confirm_ok:'はい', wallet_disconnect_confirm:'本当にウォレットの接続を解除しますか', avatar_delete_confirm:'現在のアバターを削除しますか？', search_placeholder:'検索...', profile_total_spun_short:'合計回転数：', profile_reg_date_short:'登録日：', ton_connect_btn:'ウォレットを接続', ton_connect_prompt:'取引するにはウォレットを接続してください', ton_copied:'アドレスをコピーしました', ton_copy_failed:'コピーに失敗しました', ton_sdk_not_ready:'ウォレットを読み込み中です。少ししてからもう一度お試しください', settings_sound:'効果音を再生', zientres_channel_label:'チャンネル', zientres_chat_label:'チャット', country_ru:'ロシア', country_ua:'ウクライナ', country_by:'ベラルーシ', country_kz:'カザフスタン', plate_taken:'このナンバーは既に使われています — もう一度まわしてください', spin_first:'まずナンバープレートをまわしてください', spin_after_region:'地域を選んだ後にまわしてください', inv_full:'所持数が上限です（最大10枚）', region_invalid:'正しい地域を指定してください', plate_already_saved:'このナンバーは既に保存されています', saved_toast:'保存しました', inv_empty:'ナンバープレートがありません', sent_toast:'送信しました', popup_region_invalid_title:'その地域は存在しません', popup_ok:'わかりました', region_not_exist:'地域「{{code}}」は存在しません', share_title:'シェア', share_btn:'Telegramでシェア', share_msg:'ナンバー{{plate}}が当たりました！\nあなたも挑戦してみて → @carzplate_bot', confirm_delete_plate:'このナンバープレートを削除しますか？', popup_hint_RU:'例：<b>777</b> — モスクワ、<b>98</b> — サンクトペテルブルク、<b>23</b> — クラスノダール。', popup_hint_UA:'例：<b>AA</b> — キーウ、<b>AT</b> — イヴァーノ＝フランキーウシク、<b>AB</b> — ヴィーンヌィツャ。<br>英語（ローマ字）キーボードで入力してください。', popup_hint_BY:'数字1〜7。例：<b>7</b> — ミンスク市、<b>1</b> — ブレスト州。', popup_hint_KZ:'コード01〜20。例：<b>01</b> — アスタナ、<b>02</b> — アルマトイ。'}},
+  ru:{translation:{nav_market:'РЫНОК', nav_play:'ИГРА', nav_inventory:'МОИ НОМЕРА', hdr_inventory:'МОИ НОМЕРА', hdr_profile:'ПРОФИЛЬ', inv_title:'НОМЕРНЫЕ ЗНАКИ', btn_spin:'КРУТИТЬ', player_default:'Игрок', btn_cancel:'ОТМЕНА', btn_no:'НЕТ', confirm_ok:'ДА', wallet_disconnect_confirm:'Вы точно хотите отвязать кошелёк', avatar_delete_confirm:'Удалить текущую аватарку?', search_placeholder:'Выбери страну', plates_inv_label:'Номерные знаки', profile_total_spun_short:'Всего прокрутил:', profile_reg_date_short:'Дата регистрации:', ton_connect_btn:'Подключить кошелёк', ton_connect_prompt:'Подключите кошелёк, чтобы торговать', ton_copied:'Адрес скопирован', ton_copy_failed:'Не удалось скопировать', ton_sdk_not_ready:'Кошелёк ещё загружается, попробуйте через секунду', settings_sound:'Воспроизводить звуки', zientres_channel_label:'Канал', zientres_chat_label:'Чат', country_ru:'Россия', country_ua:'Украина', country_by:'Беларусь', country_kz:'Казахстан', plate_taken:'ЭТОТ НОМЕР УЖЕ ЗАНЯТ — КРУТИ СНОВА', spin_first:'СНАЧАЛА ПРОКРУТИ НОМЕР', spin_after_region:'ПРОКРУТИ НОМЕР ПОСЛЕ ВЫБОРА РЕГИОНА', inv_full:'ИНВЕНТАРЬ ПОЛОН (МАКС. 10)', region_invalid:'УКАЖИ ВЕРНЫЙ РЕГИОН', region_exhausted:'В ЭТОМ РЕГИОНЕ ЗАКОНЧИЛИСЬ СВОБОДНЫЕ НОМЕРА', filter_btn_title:'Фильтр', filter_country_label:'Страна', filter_region_label:'Регион', filter_clear:'Очистить фильтры', filter_sort_cheap:'Сначала дешёвые', filter_sort_expensive:'Сначала дорогие', filter_sort_newest:'Недавно добавленные', filter_sort_oldest:'Давно добавленные', filter_price_label:'Цена', filter_price_from:'От', filter_price_to:'До', filter_region_pick_country_first:'Сначала выберите страну в фильтре «Страна»', search_btn_title:'Поиск', close_title:'Закрыть', back_title:'Назад', search_go_btn:'Искать', search_fill_required:'Заполни номер и регион полностью, чтобы найти его', search_loading:'Ищем...', search_offline:'Поиск пока недоступен — нет связи с сервером', search_found_label:'Номер найден:', search_not_found:'Номер не найден', view_all:'Смотреть все', plate_already_saved:'НОМЕР УЖЕ СОХРАНЁН', saved_toast:'СОХРАНЕНО', inv_empty:'У вас нет номеров', sent_toast:'ОТПРАВЛЕНО', popup_region_invalid_title:'РЕГИОН НЕ СУЩЕСТВУЕТ', popup_ok:'ПОНЯТНО', region_not_exist:'Регион «{{code}}» не существует', share_title:'ПОДЕЛИТЬСЯ', share_btn:'ПОДЕЛИТЬСЯ В TELEGRAM', share_msg:'Выбил номер {{plate}}!\nПопробуй и ты → @carzplate_bot', confirm_delete_plate:'Ты точно хочешь удалить номерной знак?', sell_btn:'Выставить на продажу', sell_coming_soon:'Продажа станет доступна позже', pd_country:'Страна:', pd_region:'Регион:', pd_number:'Номер:', pd_mint:'ID NFT:', popup_hint_RU:'Пример: <b>777</b> — Москва, <b>98</b> — СПб, <b>23</b> — Краснодар.', popup_hint_UA:'Пример: <b>AA</b> — Киев, <b>AT</b> — Ивано-Франковск, <b>AB</b> — Винница.<br>Пиши на английской раскладке.', popup_hint_BY:'Цифру 1–7. Пример: <b>7</b> — г. Минск, <b>1</b> — Брестская область.', popup_hint_KZ:'Код 01–20. Пример: <b>01</b> — Астана, <b>02</b> — Алматы.'}},
+  en:{translation:{nav_market:'MARKET', nav_play:'PLAY', nav_inventory:'MY PLATES', hdr_inventory:'MY PLATES', hdr_profile:'PROFILE', inv_title:'LICENSE PLATES', btn_spin:'SPIN', player_default:'Player', btn_cancel:'CANCEL', btn_no:'NO', confirm_ok:'YES', wallet_disconnect_confirm:'Are you sure you want to unlink your wallet', avatar_delete_confirm:'Delete your current avatar?', search_placeholder:'Choose a country', plates_inv_label:'License plates', profile_total_spun_short:'Total spins:', profile_reg_date_short:'Registration date:', ton_connect_btn:'Connect wallet', ton_connect_prompt:'Connect your wallet to trade', ton_copied:'Address copied', ton_copy_failed:'Failed to copy', ton_sdk_not_ready:'Wallet is still loading, try again in a second', settings_sound:'Play sounds', zientres_channel_label:'Channel', zientres_chat_label:'Chat', country_ru:'Russia', country_ua:'Ukraine', country_by:'Belarus', country_kz:'Kazakhstan', plate_taken:'THIS PLATE IS TAKEN — SPIN AGAIN', spin_first:'SPIN THE PLATE FIRST', spin_after_region:'SPIN THE PLATE AFTER PICKING A REGION', inv_full:'INVENTORY FULL (MAX 10)', region_invalid:'PICK A VALID REGION', region_exhausted:'NO FREE PLATES LEFT IN THIS REGION', filter_btn_title:'Filter', filter_country_label:'Country', filter_region_label:'Region', filter_clear:'Clear filters', filter_sort_cheap:'Cheapest first', filter_sort_expensive:'Most expensive first', filter_sort_newest:'Recently added', filter_sort_oldest:'Added long ago', filter_price_label:'Price', filter_price_from:'From', filter_price_to:'To', filter_region_pick_country_first:'First pick a country in the "Country" filter', search_btn_title:'Search', close_title:'Close', back_title:'Back', search_go_btn:'Search', search_fill_required:'Fill in the plate and region completely to search', search_loading:'Searching...', search_offline:'Search is not available yet — no connection to the server', search_found_label:'Plate found:', search_not_found:'Plate not found', view_all:'View all', plate_already_saved:'PLATE ALREADY SAVED', saved_toast:'SAVED', inv_empty:'You have no plates', sent_toast:'SENT', popup_region_invalid_title:"REGION DOESN'T EXIST", popup_ok:'GOT IT', region_not_exist:'Region "{{code}}" does not exist', share_title:'SHARE', share_btn:'SHARE ON TELEGRAM', share_msg:'I got the plate {{plate}}!\nTry it yourself → @carzplate_bot', confirm_delete_plate:'Are you sure you want to delete this plate?', sell_btn:'List for sale', sell_coming_soon:'Selling will be available later', pd_country:'Country:', pd_region:'Region:', pd_number:'Number:', pd_mint:'NFT ID:', popup_hint_RU:'Example: <b>777</b> — Moscow, <b>98</b> — St. Petersburg, <b>23</b> — Krasnodar.', popup_hint_UA:'Example: <b>AA</b> — Kyiv, <b>AT</b> — Ivano-Frankivsk, <b>AB</b> — Vinnytsia.<br>Type using the English (Latin) keyboard layout.', popup_hint_BY:'A digit 1–7. Example: <b>7</b> — Minsk, <b>1</b> — Brest region.', popup_hint_KZ:'Code 01–20. Example: <b>01</b> — Astana, <b>02</b> — Almaty.'}},
+  zh:{translation:{nav_market:'市场', nav_play:'游戏', nav_inventory:'我的车牌', hdr_inventory:'我的车牌', hdr_profile:'个人资料', inv_title:'车牌', btn_spin:'转动', player_default:'玩家', btn_cancel:'取消', btn_no:'否', confirm_ok:'是', wallet_disconnect_confirm:'确定要解绑钱包吗', avatar_delete_confirm:'删除当前头像？', search_placeholder:'选择国家', plates_inv_label:'车牌', profile_total_spun_short:'总旋转次数：', profile_reg_date_short:'注册日期：', ton_connect_btn:'连接钱包', ton_connect_prompt:'连接钱包以进行交易', ton_copied:'地址已复制', ton_copy_failed:'复制失败', ton_sdk_not_ready:'钱包正在加载，请稍后重试', settings_sound:'播放音效', zientres_channel_label:'频道', zientres_chat_label:'聊天', country_ru:'俄罗斯', country_ua:'乌克兰', country_by:'白俄罗斯', country_kz:'哈萨克斯坦', plate_taken:'该车牌已被占用 — 请重新转动', spin_first:'请先转动车牌', spin_after_region:'选择地区后请重新转动车牌', inv_full:'车牌栏已满（最多10个）', region_invalid:'请选择有效地区', region_exhausted:'该地区已无可用车牌', filter_btn_title:'筛选', filter_country_label:'国家', filter_region_label:'地区', filter_clear:'清除筛选', filter_sort_cheap:'价格从低到高', filter_sort_expensive:'价格从高到低', filter_sort_newest:'最新添加', filter_sort_oldest:'最早添加', filter_price_label:'价格', filter_price_from:'从', filter_price_to:'到', filter_region_pick_country_first:'请先在"国家"筛选中选择国家', search_btn_title:'搜索', close_title:'关闭', back_title:'返回', search_go_btn:'搜索', search_fill_required:'请完整填写车牌号和地区后再搜索', search_loading:'搜索中...', search_offline:'搜索暂不可用 — 无法连接服务器', search_found_label:'已找到车牌：', search_not_found:'未找到车牌', view_all:'查看全部', plate_already_saved:'该车牌已保存', saved_toast:'已保存', inv_empty:'你还没有车牌', sent_toast:'已发送', popup_region_invalid_title:'地区不存在', popup_ok:'知道了', region_not_exist:'地区「{{code}}」不存在', share_title:'分享', share_btn:'分享到 TELEGRAM', share_msg:'我抽到了车牌 {{plate}}！\n你也来试试 → @carzplate_bot', confirm_delete_plate:'确定要删除这个车牌吗？', sell_btn:'挂牌出售', sell_coming_soon:'出售功能即将开放', pd_country:'国家：', pd_region:'地区：', pd_number:'号码：', pd_mint:'NFT编号：', popup_hint_RU:'例如：<b>777</b> — 莫斯科，<b>98</b> — 圣彼得堡，<b>23</b> — 克拉斯诺达尔。', popup_hint_UA:'例如：<b>AA</b> — 基辅，<b>AT</b> — 伊万诺-弗兰科夫斯克，<b>AB</b> — 文尼察。<br>请使用英文（拉丁字母）键盘输入。', popup_hint_BY:'数字 1–7。例如：<b>7</b> — 明斯克，<b>1</b> — 布列斯特州。', popup_hint_KZ:'代码 01–20。例如：<b>01</b> — 阿斯塔纳，<b>02</b> — 阿拉木图。'}},
+  uz:{translation:{nav_market:'BOZOR', nav_play:"OʻYIN", nav_inventory:'MENING RAQAMLARIM', hdr_inventory:'MENING RAQAMLARIM', hdr_profile:'PROFIL', inv_title:'DAVLAT RAQAMLARI', btn_spin:'AYLANTIRISH', player_default:"Oʻyinchi", btn_cancel:'BEKOR QILISH', btn_no:"YO'Q", confirm_ok:'HA', wallet_disconnect_confirm:'Hamyoningizni chindan ham uzmoqchimisiz', avatar_delete_confirm:'Joriy avatarni oʻchirasizmi?', search_placeholder:'Davlatni tanlang', plates_inv_label:'Davlat raqamlari', profile_total_spun_short:'Jami aylantirildi:', profile_reg_date_short:"Roʻyxatdan oʻtgan sana:", ton_connect_btn:'Hamyonni ulash', ton_connect_prompt:'Savdo qilish uchun hamyoningizni ulang', ton_copied:'Manzil nusxalandi', ton_copy_failed:'Nusxalab boʻlmadi', ton_sdk_not_ready:'Hamyon hali yuklanmoqda, birozdan keyin urinib koʻring', settings_sound:'Ovozlarni ijro etish', zientres_channel_label:'Kanal', zientres_chat_label:'Chat', country_ru:'Rossiya', country_ua:'Ukraina', country_by:'Belarus', country_kz:"Qozogʻiston", plate_taken:'BU RAQAM BAND — QAYTA AYLANTIRING', spin_first:'AVVAL RAQAMNI AYLANTIRING', spin_after_region:'HUDUDNI TANLAGANDAN KEYIN RAQAMNI AYLANTIRING', inv_full:'INVENTAR TOʻLDI (MAKS. 10)', region_invalid:"TOʻGʻRI HUDUDNI KOʻRSATING", region_exhausted:"BU HUDUDDA BOʻSH RAQAMLAR QOLMADI", filter_btn_title:'Filtr', filter_country_label:'Davlat', filter_region_label:'Hudud', filter_clear:"Filtrlarni tozalash", filter_sort_cheap:'Avval arzon', filter_sort_expensive:'Avval qimmat', filter_sort_newest:"Yaqinda qoʻshilgan", filter_sort_oldest:"Ilgari qoʻshilgan", filter_price_label:'Narx', filter_price_from:'Dan', filter_price_to:'Gacha', filter_region_pick_country_first:'Avval "Davlat" filtrida davlatni tanlang', search_btn_title:'Qidiruv', close_title:'Yopish', back_title:'Orqaga', search_go_btn:'Qidirish', search_fill_required:"Qidirish uchun raqam va hududni toʻliq kiriting", search_loading:'Qidirilmoqda...', search_offline:"Qidiruv hali mavjud emas — server bilan aloqa yoʻq", search_found_label:'Raqam topildi:', search_not_found:'Raqam topilmadi', view_all:"Barchasini koʻrish", plate_already_saved:'RAQAM ALLAQACHON SAQLANGAN', saved_toast:'SAQLANDI', inv_empty:"Sizda raqamlar yoʻq", sent_toast:'YUBORILDI', popup_region_invalid_title:'HUDUD MAVJUD EMAS', popup_ok:'TUSHUNARLI', region_not_exist:'«{{code}}» hududi mavjud emas', share_title:'ULASHISH', share_btn:'TELEGRAMDA ULASHISH', share_msg:'{{plate}} raqamini urdim!\nSiz ham urinib koʻring → @carzplate_bot', confirm_delete_plate:"Raqamni oʻchirmoqchimisiz?", sell_btn:"Sotuvga qoʻyish", sell_coming_soon:"Sotish keyinroq mavjud boʻladi", pd_country:'Davlat:', pd_region:'Hudud:', pd_number:'Raqam:', pd_mint:'NFT ID:', popup_hint_RU:'Masalan: <b>777</b> — Moskva, <b>98</b> — Sankt-Peterburg, <b>23</b> — Krasnodar.', popup_hint_UA:'Masalan: <b>AA</b> — Kiyev, <b>AT</b> — Ivano-Frankivsk, <b>AB</b> — Vinnitsa.<br>Inglizcha (lotin) klaviatura tartibida yozing.', popup_hint_BY:'1–7 raqami. Masalan: <b>7</b> — Minsk, <b>1</b> — Brest viloyati.', popup_hint_KZ:'01–20 kodi. Masalan: <b>01</b> — Astana, <b>02</b> — Almati.'}},
+  ja:{translation:{nav_market:'マーケット', nav_play:'プレイ', nav_inventory:'マイナンバープレート', hdr_inventory:'マイナンバープレート', hdr_profile:'プロフィール', inv_title:'ナンバープレート', btn_spin:'まわす', player_default:'プレイヤー', btn_cancel:'キャンセル', btn_no:'いいえ', confirm_ok:'はい', wallet_disconnect_confirm:'本当にウォレットの接続を解除しますか', avatar_delete_confirm:'現在のアバターを削除しますか？', search_placeholder:'国を選んでください', plates_inv_label:'ナンバープレート', profile_total_spun_short:'合計回転数：', profile_reg_date_short:'登録日：', ton_connect_btn:'ウォレットを接続', ton_connect_prompt:'取引するにはウォレットを接続してください', ton_copied:'アドレスをコピーしました', ton_copy_failed:'コピーに失敗しました', ton_sdk_not_ready:'ウォレットを読み込み中です。少ししてからもう一度お試しください', settings_sound:'効果音を再生', zientres_channel_label:'チャンネル', zientres_chat_label:'チャット', country_ru:'ロシア', country_ua:'ウクライナ', country_by:'ベラルーシ', country_kz:'カザフスタン', plate_taken:'このナンバーは既に使われています — もう一度まわしてください', spin_first:'まずナンバープレートをまわしてください', spin_after_region:'地域を選んだ後にまわしてください', inv_full:'所持数が上限です（最大10枚）', region_invalid:'正しい地域を指定してください', region_exhausted:'この地域には空きナンバーがありません', filter_btn_title:'フィルター', filter_country_label:'国', filter_region_label:'地域', filter_clear:'フィルターをクリア', filter_sort_cheap:'安い順', filter_sort_expensive:'高い順', filter_sort_newest:'最近追加', filter_sort_oldest:'以前追加', filter_price_label:'価格', filter_price_from:'下限', filter_price_to:'上限', filter_region_pick_country_first:'まず「国」フィルターで国を選んでください', search_btn_title:'検索', close_title:'閉じる', back_title:'戻る', search_go_btn:'検索', search_fill_required:'検索するにはナンバーと地域を全て入力してください', search_loading:'検索中...', search_offline:'検索はまだ利用できません — サーバーに接続されていません', search_found_label:'ナンバーが見つかりました：', search_not_found:'ナンバーが見つかりません', view_all:'すべて見る', plate_already_saved:'このナンバーは既に保存されています', saved_toast:'保存しました', inv_empty:'ナンバープレートがありません', sent_toast:'送信しました', popup_region_invalid_title:'その地域は存在しません', popup_ok:'わかりました', region_not_exist:'地域「{{code}}」は存在しません', share_title:'シェア', share_btn:'Telegramでシェア', share_msg:'ナンバー{{plate}}が当たりました！\nあなたも挑戦してみて → @carzplate_bot', confirm_delete_plate:'このナンバープレートを削除しますか？', sell_btn:'販売に出す', sell_coming_soon:'販売機能は後日利用可能になります', pd_country:'国：', pd_region:'地域：', pd_number:'ナンバー：', pd_mint:'NFT ID：', popup_hint_RU:'例：<b>777</b> — モスクワ、<b>98</b> — サンクトペテルブルク、<b>23</b> — クラスノダール。', popup_hint_UA:'例：<b>AA</b> — キーウ、<b>AT</b> — イヴァーノ＝フランキーウシク、<b>AB</b> — ヴィーンヌィツャ。<br>英語（ローマ字）キーボードで入力してください。', popup_hint_BY:'数字1〜7。例：<b>7</b> — ミンスク市、<b>1</b> — ブレスト州。', popup_hint_KZ:'コード01〜20。例：<b>01</b> — アスタナ、<b>02</b> — アルマトイ。'}},
 
 };
 
@@ -1762,6 +2346,10 @@ function refreshDynamicUI(){
       document.getElementById('popup-body').innerHTML=getPopupHint(country);
     }
   }catch(e){}
+  // Кнопки фильтров рынка (страна/регион) — их подпись зависит от языка, когда фильтр не выбран
+  try{ if(typeof updateMarketCountryBtnLabel==='function') updateMarketCountryBtnLabel(); }catch(e){}
+  try{ if(typeof updateMarketRegionBtnLabel==='function') updateMarketRegionBtnLabel(); }catch(e){}
+  try{ if(typeof renderMarketRegionList==='function') renderMarketRegionList(); }catch(e){}
 }
 function setAppLang(lang){
   if(!APP_LANGS.includes(lang) || lang===currentAppLang) return;
@@ -1786,6 +2374,11 @@ function applyAppTranslations(){
     const key=el.getAttribute('data-i18n-placeholder');
     const val=tApp(key);
     if(val) el.setAttribute('placeholder', val);
+  });
+  document.querySelectorAll('[data-i18n-title]').forEach(el=>{
+    const key=el.getAttribute('data-i18n-title');
+    const val=tApp(key);
+    if(val) el.setAttribute('title', val);
   });
 }
 function updateLangFlagsUI(){
@@ -2293,7 +2886,6 @@ function saveGame(){
       settingHaptic,
       totalSpins,
       registeredAt,
-      currentTheme,
       currentAppLang,
       settingSound,
       _savedForId:getMyId(),
@@ -2348,7 +2940,6 @@ function loadGame(){
     if(typeof data.settingHaptic==='boolean') settingHaptic=data.settingHaptic;
     if(typeof data.totalSpins==='number') totalSpins=data.totalSpins;
     if(typeof data.registeredAt==='number') registeredAt=data.registeredAt;
-    if(typeof data.currentTheme==='string') currentTheme=data.currentTheme;
     if(typeof data.currentAppLang==='string' && APP_LANGS.includes(data.currentAppLang)) currentAppLang=data.currentAppLang;
     if(typeof data.settingSound==='boolean') settingSound=data.settingSound;
     return true;
@@ -2384,7 +2975,8 @@ function bnavSwitch(tab) {
     if (el) el.classList.remove('show');
   });
   document.getElementById('search-overlay')?.classList.remove('show');
-  document.getElementById('level-overlay')?.classList.remove('show');
+  document.getElementById('plates-inventory-overlay')?.classList.remove('show');
+  document.getElementById('plate-detail-overlay')?.classList.remove('show');
   // Открываем нужную панель
   if (tab !== 'main') {
     const panelId = BNAV_PANELS[tab];
@@ -2464,10 +3056,12 @@ function activateClaudePreviewProfile(){
   tonWalletFullAddress = 'UQDemoPreviewWalletAddress00000000000';
   const btn=document.getElementById('ton-connect-prompt');
   const card=document.getElementById('wallet-profile-card');
+  const inv=document.getElementById('wallet-inventories');
   const addrEl=document.getElementById('wallet-profile-address');
   if(addrEl) addrEl.textContent='UQDe...0000';
   if(btn) btn.style.display='none';
   if(card) card.style.display='flex';
+  if(inv) inv.style.display='flex';
   applyWalletAvatar(tonWalletFullAddress);
 }
 
@@ -2591,6 +3185,7 @@ function cancelDisconnectTonWallet(){
 function updateTonWalletUI(wallet){
   const btn=document.getElementById('ton-connect-prompt');
   const card=document.getElementById('wallet-profile-card');
+  const inv=document.getElementById('wallet-inventories');
   if(!btn||!card) return;
 
   if(wallet && wallet.account && wallet.account.address){
@@ -2603,11 +3198,13 @@ function updateTonWalletUI(wallet){
     if(addrEl) addrEl.textContent = friendly.slice(0,4)+'...'+friendly.slice(-4);
     btn.style.display='none';
     card.style.display='flex';
+    if(inv) inv.style.display='flex';
     applyWalletAvatar(friendly);
   } else {
     tonWalletFullAddress='';
     btn.style.display='flex';
     card.style.display='none';
+    if(inv) inv.style.display='none';
     applyWalletAvatar(null);
   }
 }
@@ -2786,23 +3383,73 @@ const SERVER_URL=window.__ENV_SERVER_URL__||'';
 //  PLATES DB API
 // ═══════════════════════════════════════════════════════════
 
-function getCharsOnly(){
-  const v=vals;
-  if(country==='RU') return `${v.l1||''}${v.d1||''}${v.d2||''}${v.d3||''}${v.l2||''}${v.l3||''}`;
-  if(country==='UA') return `${v.d1||''}${v.d2||''}${v.d3||''}${v.d4||''}${v.l1||''}${v.l2||''}`;
-  if(country==='BY') return `${v.d1||''}${v.d2||''}${v.d3||''}${v.d4||''}${v.l1||''}${v.l2||''}`;
-  if(country==='KZ') return `${v.d1||''}${v.d2||''}${v.d3||''}${v.l1||''}${v.l2||''}${v.l3||''}`;
+function charsFromVals(ctry, v){
+  v=v||{};
+  if(ctry==='RU') return `${v.l1||''}${v.d1||''}${v.d2||''}${v.d3||''}${v.l2||''}${v.l3||''}`;
+  if(ctry==='UA') return `${v.d1||''}${v.d2||''}${v.d3||''}${v.d4||''}${v.l1||''}${v.l2||''}`;
+  if(ctry==='BY') return `${v.d1||''}${v.d2||''}${v.d3||''}${v.d4||''}${v.l1||''}${v.l2||''}`;
+  if(ctry==='KZ') return `${v.d1||''}${v.d2||''}${v.d3||''}${v.l1||''}${v.l2||''}${v.l3||''}`;
   return '';
 }
+function getCharsOnly(){
+  return charsFromVals(country, vals);
+}
 
-async function apiClaimPlate(ctry, region, chars){
+// Обратное к getCharsOnly(): раскладывает строку символов, пришедшую с сервера,
+// обратно по именованным слотам (l1,d1,d2... и т.д.) в том же порядке, в котором
+// они склеиваются в getCharsOnly() — порядок и регистр каждого символа сохраняются как есть.
+function charsToVals(ctry, chars){
+  const out={};
+  const slots=SLOTS_DEF[ctry]||[];
+  const s=String(chars||'');
+  slots.forEach((slot,i)=>{ out[slot.id]=s[i]||''; });
+  return out;
+}
+
+// ── Резервирование гарантированно уникального номера ДО прокрутки ──
+//
+// Занятая комбинация не должна физически попасть на экран игроку, поэтому
+// проверка на уникальность обязана происходить ДО визуальной прокрутки, а не
+// после (как раньше). Вызывается прямо перед стартом анимации в spinOnly().
+//
+// Требуемый контракт бэкенда (когда БД будет подключена):
+//   POST /plate/reserve  { telegram_id, country, region }
+//   Сервер должен АТОМАРНО (в одной транзакции/с уникальным индексом в БД,
+//   чтобы не было гонок между игроками, крутящими одновременно):
+//     1. Сгенерировать случайный набор символов chars для этой страны/региона
+//        по тем же правилам символов, что и в SLOTS_DEF (RU_L/RU_D/UA_L/BY_L/KZ_L).
+//     2. Проверить, что комбинация (country, region, chars) ещё не существует
+//        в таблице зарезервированных/выбитых номеров — лимит на каждую
+//        вариацию строго 1, повторов быть не может.
+//     3. Сразу же записать эту комбинацию в таблицу (застолбить), чтобы её
+//        не выдало другому игроку, и вернуть её игроку:
+//          → { ok:true, chars:'А111АА', plate_key:'ru_77_a111aa' }
+//     Таблица в БД (одна строка = один сохранённый/зарезервированный номер):
+//          plate_key (уникальный, PK)   — country+region+chars, например 'ru_77_a111aa'
+//          country                       — 'RU' | 'UA' | 'BY' | 'KZ'
+//          region                        — код региона, например '77', 'AA', '05'
+//          chars                         — сам номер как есть, например 'А111АА'
+//          telegram_id                   — кто выбил/владеет номером
+//          created_at                    — когда зарезервирован
+//        UNIQUE constraint на (country, region, chars) — гарантия, что дублей
+//        не будет никогда, даже при одновременных запросах с разных устройств.
+//     Если свободных комбинаций для этой страны/региона больше не осталось —
+//     сервер отвечает { ok:false, exhausted:true }.
+//   Если region ещё не отдавал ни одного номера, apiReleasePlate() освобождает
+//   ранее зарезервированный, но не сохранённый в инвентарь номер (см. ниже) —
+//   этот эндпоинт уже реализован и трогать не нужно.
+//
+// Пока сервер не подключён (или недоступен), функция возвращает {ok:true,
+// offline:true} без chars — тогда spinOnly() временно генерирует номер локально
+// без проверки на занятость (единственный вариант, доступный без БД).
+async function apiReserveUniquePlate(ctry, region){
   try{
     const ctrl=new AbortController();
     const tid=setTimeout(()=>ctrl.abort(),4000);
-    const r=await fetch(`${SERVER_URL}/plate/claim`,{
+    const r=await fetch(`${SERVER_URL}/plate/reserve`,{
       method:'POST',
       headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({telegram_id:getMyId(),country:ctry,region,chars}),
+      body:JSON.stringify({telegram_id:getMyId(),country:ctry,region}),
       signal:ctrl.signal
     });
     clearTimeout(tid);
@@ -2821,6 +3468,142 @@ async function apiReleasePlate(plate_key){
       body:JSON.stringify({telegram_id:getMyId(),plate_key})
     });
   }catch(e){}
+}
+
+// ── Присвоение постоянного номера минта (#1, #2, #3, ...) ──
+//
+// Номер минта — ОДНА общая, бесконечная, строго возрастающая последовательность
+// на ВСЕХ игроков сразу (не своя у каждого игрока). Он никогда не повторяется
+// и не может быть выдан дважды, даже если два разных игрока жмут "Сохранить"
+// в один и тот же момент — это должно быть защищено атомарностью на сервере.
+//
+// Вызывается РОВНО ОДИН РАЗ — в момент сохранения номера в инвентарь
+// (saveToInventory), именно тогда номер официально становится "заминченным".
+// Дальше mint_no хранится как постоянная характеристика этого конкретного
+// номерного знака (наравне со страной/регионом/самими символами) и уже
+// никогда не меняется — в том числе если знак потом переходит между
+// инвентарями/маркетплейсом в будущем.
+//
+// Требуемый контракт бэкенда:
+//   POST /plate/mint  { telegram_id, plate_key, country, region, chars }
+//   Сервер должен АТОМАРНО выдать следующее число из единого возрастающего
+//   счётчика. Проще и надёжнее всего — обычный SERIAL/AUTO_INCREMENT столбец
+//   в реляционной БД: сама база данных гарантирует, что при параллельных
+//   запросах от разных игроков разные строки получат строго разные,
+//   последовательные номера — этого достаточно и для защиты от одновременных
+//   минтов, и для полного отсутствия повторов. Значений сколько угодно —
+//   последовательность бесконечна по своей природе (обычный числовой
+//   счётчик), переполнение практически невозможно.
+//   Таблица (одна строка = один заминченный номер):
+//        mint_no (SERIAL/AUTO_INCREMENT, PK, по возрастанию — 1,2,3...)
+//        plate_key    — уникальный ключ самого номера (country+region+chars)
+//        country, region, chars
+//        telegram_id  — кто заминтил
+//        created_at
+//   Ответ: { ok:true, mint_no: 137 }
+//
+// Пока сервер не подключён — mint_no остаётся null (сам номер всё равно
+// сохраняется в инвентарь локально), а бейдж "#N" на нём просто не
+// показывается, пока не станет известен настоящий, окончательный номер минта.
+async function apiMintPlate(plate_key, ctry, region, chars){
+  try{
+    const ctrl=new AbortController();
+    const tid=setTimeout(()=>ctrl.abort(),4000);
+    const r=await fetch(`${SERVER_URL}/plate/mint`,{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({telegram_id:getMyId(),plate_key,country:ctry,region,chars}),
+      signal:ctrl.signal
+    });
+    clearTimeout(tid);
+    return await r.json();
+  }catch(e){
+    return {ok:false,offline:true};
+  }
+}
+
+// ── ВРЕМЕННЫЙ локальный счётчик минтов (только пока не подключён сервер) ──
+//
+// Настоящий, окончательный #N (см. apiMintPlate выше) обязан приходить с
+// сервера — только там можно гарантировать одну общую последовательность на
+// ВСЕХ игроков без повторов при параллельных минтах. Эти локальные номера
+// существуют только для того, чтобы интерфейс не выглядел пустым, пока
+// бэкенд ещё не подключён: они уникальны только в пределах этого устройства
+// и НЕ являются финальными — после подключения сервера apiMintPlate начнёт
+// возвращать {ok:true, mint_no}, и эта ветка просто перестанет вызываться.
+function _nextLocalMintNo(){
+  let n=parseInt(localStorage.getItem('local_mint_counter')||'0',10);
+  if(!Number.isFinite(n)||n<0) n=0;
+  n+=1;
+  try{ localStorage.setItem('local_mint_counter', String(n)); }catch(e){}
+  return n;
+}
+// Проставляет временный локальный #N уже сохранённым ранее номерам, у которых
+// его почему-то ещё нет (например были сохранены до того, как минт заработал).
+function backfillLocalMintNumbers(){
+  let changed=false;
+  inventory.forEach(it=>{
+    if(!it.mint_no){ it.mint_no=_nextLocalMintNo(); changed=true; }
+  });
+  if(changed) saveGame();
+}
+
+// ── Поиск номера в таблице занятых/сохранённых номеров ──
+//
+// Требуемый контракт бэкенда (та же таблица, что и в apiReserveUniquePlate):
+//   POST /plate/search  { country, region, chars }
+//   Ищет строку с plate_key = country+region+chars в таблице занятых номеров и отвечает:
+//     → { ok:true, found:true,  plate:{ country, region, chars, telegram_id, created_at } }
+//     → { ok:true, found:false } — такого номера ни у кого нет
+//   Пока сервер не подключён — offline:true, показываем нейтральное сообщение,
+//   а не ложное "не найден".
+async function apiSearchPlate(ctry, region, chars){
+  try{
+    const ctrl=new AbortController();
+    const tid=setTimeout(()=>ctrl.abort(),4000);
+    const r=await fetch(`${SERVER_URL}/plate/search`,{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({country:ctry,region,chars}),
+      signal:ctrl.signal
+    });
+    clearTimeout(tid);
+    return await r.json();
+  }catch(e){
+    return {ok:true,offline:true};
+  }
+}
+
+// Запускается по кнопке "Искать" в поиске
+async function doPlateSearch(){
+  if(!searchCountry) return;
+  playClick();haptic('light');
+  const slots=SLOTS_DEF[searchCountry]||[];
+  const chars=slots.map(s=>searchVals[s.id]||'').join('');
+  const complete = !slots.some(s=>!searchVals[s.id]) && !!searchRegionCode && !!REGIONS[searchCountry][searchRegionCode];
+  const results=document.getElementById('search-results');
+  if(!complete){
+    haptic('warning');playError();
+    if(results) results.innerHTML=`<div style="padding:14px 4px;color:var(--muted);font-size:14px">${tApp('search_fill_required')}</div>`;
+    return;
+  }
+  if(results) results.innerHTML=`<div style="padding:14px 4px;color:var(--muted);font-size:14px">${tApp('search_loading')}</div>`;
+  const res=await apiSearchPlate(searchCountry, searchRegionCode, chars);
+  renderSearchResult(res, searchCountry, searchRegionCode, chars);
+}
+function renderSearchResult(res, ctry, region, chars){
+  const results=document.getElementById('search-results');
+  if(!results) return;
+  if(!res || res.offline){
+    results.innerHTML=`<div style="padding:14px 4px;color:var(--muted);font-size:14px">${tApp('search_offline')}</div>`;
+    return;
+  }
+  if(res.ok && res.found){
+    const html=plateHTML(ctry, charsToVals(ctry,chars), region, '', true);
+    results.innerHTML=`<div style="margin-bottom:10px;color:var(--muted);font-size:13px">${tApp('search_found_label')}</div><div class="search-plate-row" style="cursor:default">${html}</div>`;
+  } else {
+    results.innerHTML=`<div style="padding:14px 4px;color:var(--muted);font-size:14px">${tApp('search_not_found')}</div>`;
+  }
 }
 
 async function apiSyncPlayer(){
@@ -3037,8 +3820,6 @@ window.addEventListener('DOMContentLoaded',()=>{
 
   // Загружаем локальное сохранение
   loadGame();
-  // Применяем тему после загрузки сейва (на случай расхождения с localStorage)
-  document.documentElement.setAttribute('data-theme', currentTheme==='dark'?'dark':'light');
   updateThemeLangUI();
   if(window.i18next && i18next.isInitialized && i18next.language!==currentAppLang){
     i18next.changeLanguage(currentAppLang, ()=>{ applyAppTranslations(); updateLangFlagsUI(); refreshDynamicUI(); });
@@ -3052,6 +3833,7 @@ window.addEventListener('DOMContentLoaded',()=>{
   // init plate state fresh
   regionCode='';plateEmpty=true;spunAtLeastOnce=false;clearVals();
   applyTheme();
+  backfillLocalMintNumbers(); // временно проставляет #N уже сохранённым номерам без mint_no (см. комментарий у функции)
   buildPlate();renderInventory();
   updateThemeLangUI();
 
