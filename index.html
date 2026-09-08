@@ -2007,6 +2007,7 @@ function openPlateDetail(i){
   const item=inventory[i];
   if(!item) return;
   playClick();haptic('light');
+  closeAllOverlaysExcept('plate-detail-overlay');
   const html=plateHTML(item.country,item.vals,item.rc,'',true);
   const chars=charsFromVals(item.country,item.vals);
   const mintLabel=item.mint_no?`#${item.mint_no}`:'—';
@@ -2086,6 +2087,7 @@ function showToast(msg,type=''){
 function openThemeLangMenu(){
   if(_bnavCurrent==='main') dropCurrentSpunPlate();
   playClick();haptic('light');
+  closeAllOverlaysExcept('theme-lang-overlay');
   updateThemeLangUI();
   document.getElementById('theme-lang-overlay').classList.add('show');
   updateTelegramBackButton();
@@ -2102,6 +2104,7 @@ function closeThemeLangIfBg(e){
 let marketFilterValue='price_asc';
 function openMarketFilterMenu(){
   playClick();haptic('light');
+  closeAllOverlaysExcept('market-filter-overlay');
   updateMarketFilterUI();
   document.getElementById('market-filter-overlay')?.classList.add('show');
   updateTelegramBackButton();
@@ -2181,6 +2184,7 @@ function renderMarketCountryList(){
 }
 function openMarketCountryMenu(){
   playClick();haptic('light');
+  closeAllOverlaysExcept('market-country-overlay');
   renderMarketCountryList();
   document.getElementById('market-country-overlay')?.classList.add('show');
   updateTelegramBackButton();
@@ -2247,6 +2251,7 @@ function renderMarketRegionList(){
 }
 function openMarketRegionMenu(){
   playClick();haptic('light');
+  closeAllOverlaysExcept('market-region-overlay');
   renderMarketRegionList();
   document.getElementById('market-region-overlay')?.classList.add('show');
   updateTelegramBackButton();
@@ -2286,6 +2291,7 @@ function selectMarketRegion(code){
 // ── ПОИСК: открывается по кнопке-лупе в шапке, крестик возвращает на главный экран ──
 function openSearchOverlay(){
   playClick();haptic('light');
+  closeAllOverlaysExcept('search-overlay');
   searchCountry=null;
   searchVals={};
   searchRegionCode='';
@@ -2305,6 +2311,7 @@ function closeSearchOverlay(){
 function openPlatesInventoryMenu(){
   if(!tonWalletFullAddress) return; // без подключённого кошелька инвентарь недоступен
   playClick();haptic('light');
+  closeAllOverlaysExcept('plates-inventory-overlay');
   renderInventory(); // на случай если список успел устареть с момента последнего сохранения/удаления
   document.getElementById('plates-inventory-overlay')?.classList.add('show');
   updateTelegramBackButton();
@@ -2986,6 +2993,19 @@ const BNAV_PANELS = {
   profile: 'bpanel-profile',
 };
 
+// Только один полноэкранный экран/шторка должны быть видны одновременно —
+// иначе новая открытая шторка рендерится ПОД уже открытой (тот же z-index,
+// а побеждает та, что позже в DOM), и выглядит так, будто ничего не произошло.
+// Вызывается в начале каждой open*() функции экрана/шторки.
+function closeAllOverlaysExcept(exceptId){
+  ['search-overlay','plates-inventory-overlay','plate-detail-overlay',
+   'market-filter-overlay','market-country-overlay','market-region-overlay',
+   'theme-lang-overlay'].forEach(id=>{
+    if(id===exceptId) return;
+    document.getElementById(id)?.classList.remove('show');
+  });
+}
+
 let _bnavCurrent = 'main';
 
 // ═══════════════════════════════════════════════════════════
@@ -3062,6 +3082,10 @@ function bnavSwitch(tab) {
   document.getElementById('search-overlay')?.classList.remove('show');
   document.getElementById('plates-inventory-overlay')?.classList.remove('show');
   document.getElementById('plate-detail-overlay')?.classList.remove('show');
+  document.getElementById('market-filter-overlay')?.classList.remove('show');
+  document.getElementById('market-country-overlay')?.classList.remove('show');
+  document.getElementById('market-region-overlay')?.classList.remove('show');
+  document.getElementById('theme-lang-overlay')?.classList.remove('show');
   // Открываем нужную панель
   if (tab !== 'main') {
     const panelId = BNAV_PANELS[tab];
